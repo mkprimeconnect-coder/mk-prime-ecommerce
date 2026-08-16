@@ -42,6 +42,7 @@ function initAuthModal() {
 
     if (!authModal) return;
 
+    // Bulletproof event delegation for open triggers
     document.addEventListener('click', (e) => {
         const trigger = e.target.closest('.auth-trigger');
         if (trigger) {
@@ -76,7 +77,12 @@ function initAuthModal() {
         googleBtn.addEventListener('click', async () => {
             googleBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connecting to Google...';
             try {
-                const { data, error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
+                const { error } = await supabase.auth.signInWithOAuth({ 
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin + '/dashboard.html'
+                    }
+                });
                 if (error) throw error;
             } catch (error) {
                 console.error('Google Login Error:', error.message);
@@ -87,8 +93,8 @@ function initAuthModal() {
     }
 }
 
-// Real Email Login / Signup using Supabase
-async function handleEmailLogin(event) {
+// Real Email Login / Signup using Supabase (Globally available for form submission)
+window.handleEmailLogin = async function(event) {
     event.preventDefault();
     const email = document.getElementById('userEmail').value;
     const password = document.getElementById('userPassword').value;
@@ -99,7 +105,7 @@ async function handleEmailLogin(event) {
     submitBtn.disabled = true;
 
     // Try logging in first
-    let { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    let { error } = await supabase.auth.signInWithPassword({ email, password });
 
     // If account doesn't exist, automatically sign them up!
     if (error) {
@@ -119,7 +125,7 @@ async function handleEmailLogin(event) {
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
     window.location.href = 'dashboard.html';
-}
+};
 
 // Check Session on page load
 async function checkAuthStatus() {
