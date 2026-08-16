@@ -23,9 +23,9 @@ function initScrollEffects() {
     
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
-            if(header) header.classList.add('scrolled');
+            if (header) header.classList.add('scrolled');
         } else {
-            if(header) header.classList.remove('scrolled');
+            if (header) header.classList.remove('scrolled');
         }
     });
 
@@ -35,22 +35,22 @@ function initScrollEffects() {
     });
 }
 
-// --- 4. AUTHENTICATION MODAL LOGIC (Fixed & Bulletproof) ---
+// --- 4. AUTHENTICATION MODAL LOGIC (Bulletproof Delegation) ---
 function initAuthModal() {
     const authModal = document.getElementById('authModal');
     const closeBtn = document.getElementById('closeAuthBtn');
-    const authTriggers = document.querySelectorAll('.auth-trigger');
 
     if (!authModal) return;
 
-    // Open Modal on click
-    authTriggers.forEach(trigger => {
-        trigger.addEventListener('click', (e) => {
+    // Event delegation ensures inner icons/text of auth-trigger work instantly
+    document.addEventListener('click', (e) => {
+        const trigger = e.target.closest('.auth-trigger');
+        if (trigger) {
             e.preventDefault();
             e.stopPropagation();
             authModal.classList.add('active');
             document.body.style.overflow = 'hidden';
-        });
+        }
     });
 
     // Close Modal
@@ -245,13 +245,13 @@ function renderProducts(products, container) {
     }, 300);
 }
 
-// --- 8. MOBILE MENU LOGIC (Fixed to open Shop Page) ---
+// --- 8. MOBILE MENU LOGIC (Redirects to shop page smoothly) ---
 function initMobileMenu() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    if(menuToggle) {
-        menuToggle.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
+        const menuToggle = e.target.closest('.menu-toggle');
+        if (menuToggle) {
             e.preventDefault();
-            window.location.href = 'shop.html'; // Top 3 lines ab click karne par Shop page kholengi
-        });
-    }
+            window.location.href = 'shop.html';
+        }
+    });
 }
