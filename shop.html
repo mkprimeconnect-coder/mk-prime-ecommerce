@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Shop premium apparel, gadgets, and lifestyle accessories at MK Prime Connect.">
+    <meta name="theme-color" content="#111111">
+    <title>Shop | MK Prime Connect</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MASTER CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="smooth-scroll-enabled">
+
+    <!-- ==========================================
+         MAIN HEADER (Same as Index)
+         ========================================== -->
+    <header class="glass-header" id="mainHeader">
+        <div class="header-container">
+            <div class="header-left mobile-only">
+                <button class="icon-btn menu-toggle" aria-label="Open Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="header-center brand-container">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-highlight">MK</span>
+                    <span class="brand-text">PRIME</span>
+                </a>
+            </div>
+
+            <div class="header-right action-icons">
+                <button class="icon-btn search-trigger tooltip-wrapper" aria-label="Search Products">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn auth-trigger tooltip-wrapper desktop-only" id="headerAuthBtn" aria-label="My Account">
+                    <i class="far fa-user-circle"></i>
+                    <span class="btn-label">Sign In</span>
+                </button>
+                <button class="icon-btn cart-trigger tooltip-wrapper" onclick="window.location.href='cart.html'" aria-label="Shopping Cart">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge pulse-anim" id="headerCartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         SHOP PAGE CONTENT
+         ========================================== -->
+    <main class="main-wrapper shop-page-wrapper">
+        
+        <!-- Shop Banner -->
+        <section class="shop-banner glass-container">
+            <div class="banner-overlay"></div>
+            <div class="shop-banner-content text-center">
+                <h1 class="page-title gradient-text">Our Collection</h1>
+                <p class="page-subtitle">Discover premium items handpicked for you.</p>
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <a href="index.html">Home</a>
+                    <i class="fas fa-chevron-right separator"></i>
+                    <span class="current-page">Shop</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shop Layout (Sidebar + Main Content) -->
+        <section class="shop-layout section-padding">
+            
+            <!-- Mobile Filter Toggle Button -->
+            <div class="mobile-filter-toggle mobile-only">
+                <button class="btn-secondary-outline full-width" id="mobileFilterBtn">
+                    <i class="fas fa-filter"></i> Filters & Sort
+                </button>
+            </div>
+
+            <!-- 1. FILTER SIDEBAR -->
+            <aside class="shop-sidebar glass-card" id="filterSidebar">
+                <div class="sidebar-header mobile-only flex-between">
+                    <h3>Filters</h3>
+                    <button class="close-sidebar icon-btn" id="closeSidebarBtn"><i class="fas fa-times"></i></button>
+                </div>
+
+                <!-- Category Filter -->
+                <div class="filter-group">
+                    <h4 class="filter-title">Categories</h4>
+                    <ul class="filter-list custom-radio-list">
+                        <li>
+                            <label class="custom-radio">
+                                <input type="radio" name="category" value="all" checked>
+                                <span class="radio-mark"></span>
+                                <span class="filter-text">All Products</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="custom-radio">
+                                <input type="radio" name="category" value="apparel">
+                                <span class="radio-mark"></span>
+                                <span class="filter-text">Apparel</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="custom-radio">
+                                <input type="radio" name="category" value="gadgets">
+                                <span class="radio-mark"></span>
+                                <span class="filter-text">Gadgets</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="custom-radio">
+                                <input type="radio" name="category" value="accessories">
+                                <span class="radio-mark"></span>
+                                <span class="filter-text">Accessories</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="custom-radio">
+                                <input type="radio" name="category" value="gifts">
+                                <span class="radio-mark"></span>
+                                <span class="filter-text">Gifts</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-divider"></div>
+
+                <!-- Price Range Filter -->
+                <div class="filter-group">
+                    <h4 class="filter-title">Price Range</h4>
+                    <ul class="filter-list custom-radio-list">
+                        <li>
+                            <label class="custom-radio">
+                                <input type="radio" name="price" value="all" checked>
+                                <span class="radio-mark"></span>
+                                <span class="filter-text">Any Price</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="custom-radio">
+                                <input type="radio" name="price" value="under999">
+                                <span class="radio-mark"></span>
+                                <span class="filter-text">Under ₹999</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="custom-radio">
+                                <input type="radio" name="price" value="1000to2999">
+                                <span class="radio-mark"></span>
+                                <span class="filter-text">₹1000 - ₹2999</span>
+                            </label>
+                        </li>
+                        <li>
+                            <label class="custom-radio">
+                                <input type="radio" name="price" value="above3000">
+                                <span class="radio-mark"></span>
+                                <span class="filter-text">Above ₹3000</span>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- Apply Button (Mobile Only) -->
+                <button class="btn-primary-solid full-width mt-10 mobile-only" id="applyFiltersBtn">Apply Filters</button>
+            </aside>
+
+            <!-- 2. PRODUCT GRID AREA -->
+            <div class="shop-main-content">
+                
+                <!-- Top Toolbar (Sorting and Count) -->
+                <div class="shop-toolbar flex-between glass-card">
+                    <p class="product-count">Showing <span class="font-bold" id="totalProductsCount">...</span> products</p>
+                    <div class="sort-wrapper flex-center">
+                        <label for="sortProducts" class="desktop-only">Sort By:</label>
+                        <div class="custom-select-wrapper">
+                            <select id="sortProducts" class="glass-select">
+                                <option value="newest">Newest Arrivals</option>
+                                <option value="price-low-high">Price: Low to High</option>
+                                <option value="price-high-low">Price: High to Low</option>
+                                <option value="popular">Most Popular</option>
+                            </select>
+                            <i class="fas fa-chevron-down select-arrow"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- The Actual Product Grid -->
+                <div class="premium-product-grid shop-grid" id="allProductGrid">
+                    
+                    <!-- 6 Skeleton Loaders to show professional loading state -->
+                    <div class="product-card skeleton-card">
+                        <div class="skeleton-img pulse-bg"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line short pulse-bg"></div>
+                            <div class="skeleton-line long pulse-bg"></div>
+                            <div class="skeleton-price-row flex-between">
+                                <div class="skeleton-line price pulse-bg"></div>
+                                <div class="skeleton-circle pulse-bg"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card skeleton-card">
+                        <div class="skeleton-img pulse-bg"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line short pulse-bg"></div>
+                            <div class="skeleton-line long pulse-bg"></div>
+                            <div class="skeleton-price-row flex-between">
+                                <div class="skeleton-line price pulse-bg"></div>
+                                <div class="skeleton-circle pulse-bg"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card skeleton-card">
+                        <div class="skeleton-img pulse-bg"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line short pulse-bg"></div>
+                            <div class="skeleton-line long pulse-bg"></div>
+                            <div class="skeleton-price-row flex-between">
+                                <div class="skeleton-line price pulse-bg"></div>
+                                <div class="skeleton-circle pulse-bg"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card skeleton-card">
+                        <div class="skeleton-img pulse-bg"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line short pulse-bg"></div>
+                            <div class="skeleton-line long pulse-bg"></div>
+                            <div class="skeleton-price-row flex-between">
+                                <div class="skeleton-line price pulse-bg"></div>
+                                <div class="skeleton-circle pulse-bg"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card skeleton-card desktop-only-grid">
+                        <div class="skeleton-img pulse-bg"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line short pulse-bg"></div>
+                            <div class="skeleton-line long pulse-bg"></div>
+                            <div class="skeleton-price-row flex-between">
+                                <div class="skeleton-line price pulse-bg"></div>
+                                <div class="skeleton-circle pulse-bg"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card skeleton-card desktop-only-grid">
+                        <div class="skeleton-img pulse-bg"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton-line short pulse-bg"></div>
+                            <div class="skeleton-line long pulse-bg"></div>
+                            <div class="skeleton-price-row flex-between">
+                                <div class="skeleton-line price pulse-bg"></div>
+                                <div class="skeleton-circle pulse-bg"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Skeleton End -->
+
+                </div>
+
+                <!-- Empty State (Hidden by default, shown if no products match filter) -->
+                <div class="empty-state text-center hidden" id="noProductsFound">
+                    <div class="empty-icon"><i class="fas fa-box-open"></i></div>
+                    <h3>No products found</h3>
+                    <p>Try adjusting your filters or search criteria.</p>
+                    <button class="btn-primary-outline" id="clearFiltersBtn">Clear Filters</button>
+                </div>
+
+                <!-- Load More Button -->
+                <div class="load-more-container text-center mt-30">
+                    <button class="btn-secondary-outline hover-lift" id="loadMoreBtn">
+                        Load More <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         DEEP FOOTER SECTION (Same as Index)
+         ========================================== -->
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="footer-logo">MK <span class="highlight">PRIME</span></a>
+                <p class="footer-desc">Redefining online shopping with premium quality, seamless UI, and secure UPI transactions.</p>
+                <div class="social-icons">
+                    <a href="#" class="social-btn hover-lift"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-btn hover-lift"><i class="fab fa-facebook-f"></i></a>
+                </div>
+            </div>
+            <div class="footer-col links-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="shop.html">Shop All</a></li>
+                    <li><a href="trending.html">Trending Now</a></li>
+                    <li><a href="cart.html">View Cart</a></li>
+                </ul>
+            </div>
+            <div class="footer-col contact-col">
+                <h4>Get in Touch</h4>
+                <ul class="contact-list">
+                    <li><i class="fas fa-phone-alt"></i> +91 9967607756 (Muskan Khan)</li>
+                    <li><i class="fas fa-envelope"></i> mkprimeconnect@gmail.com</li>
+                    <li><i class="fas fa-qrcode"></i> UPI: 9112923138@ybl</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom flex-between">
+            <p class="copyright">&copy; 2026 MK Prime Connect. All Rights Reserved.</p>
+            <div class="payment-methods">
+                <span class="upi-text font-bold">UPI Accepted</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         FLOATING ACTIONS & BOTTOM NAV (Same as Index)
+         ========================================== -->
+    <div class="floating-actions-wrapper">
+        <a href="mailto:mkprimeconnect@gmail.com" class="float-btn email-float bobbing-anim delay-1" aria-label="Email Support">
+            <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://wa.me/919967607756" target="_blank" class="float-btn whatsapp-float bobbing-anim" aria-label="WhatsApp Support">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <nav class="bottom-nav-bar glass-nav">
+        <a href="index.html" class="b-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="shop.html" class="b-nav-item active">
+            <i class="fas fa-border-all"></i>
+            <span>Shop</span>
+        </a>
+        <a href="trending.html" class="b-nav-item">
+            <i class="fas fa-fire"></i>
+            <span>Hot</span>
+        </a>
+        <a href="cart.html" class="b-nav-item cart-nav">
+            <div class="b-nav-icon-wrapper">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="b-nav-badge pulse-anim" id="bottomCartCount">0</span>
+            </div>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="b-nav-item auth-trigger" id="bottomAccountBtn">
+            <i class="far fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- AUTHENTICATION MODAL (Same as Index) -->
+    <!-- (Omitted for brevity in text, but you keep the exact same modal block here as in index.html) -->
+    <div id="authModal" class="modal-backdrop">
+        <div class="modal-card glass-modal">
+            <button class="modal-close-btn" id="closeAuthBtn"><i class="fas fa-times"></i></button>
+            <div class="modal-header text-center">
+                <h3 class="modal-title">Welcome to MK Prime</h3>
+            </div>
+            <div class="modal-body">
+                <button class="btn-social-auth google-auth hover-lift" id="googleLoginBtn">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="social-icon">
+                    <span>Continue with Google</span>
+                </button>
+                <div class="auth-divider"><span class="divider-text">OR EMAIL</span></div>
+                <form id="emailAuthForm" class="auth-form">
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope icon-left"></i>
+                            <input type="email" class="glass-input" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock icon-left"></i>
+                            <input type="password" class="glass-input" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary-solid full-width hover-lift mt-10">Login / Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="app.js"></script>
+
+</body>
+</html>
