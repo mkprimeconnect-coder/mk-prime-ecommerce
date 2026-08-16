@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Secure checkout and shopping cart for MK Prime Connect.">
+    <meta name="theme-color" content="#111111">
+    <title>Your Cart & Checkout | MK Prime Connect</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MASTER CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="smooth-scroll-enabled checkout-bg">
+
+    <!-- ==========================================
+         MAIN HEADER (Minimal for Checkout to avoid distractions)
+         ========================================== -->
+    <header class="glass-header" id="mainHeader">
+        <div class="header-container">
+            <!-- Back Button -->
+            <div class="header-left">
+                <button class="icon-btn tooltip-wrapper mobile-back-btn" onclick="history.back()" aria-label="Go Back">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <!-- Brand Logo Center -->
+            <div class="header-center brand-container">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-highlight">MK</span>
+                    <span class="brand-text">PRIME</span>
+                </a>
+            </div>
+
+            <!-- Only Secure Lock Icon on Right for Cart -->
+            <div class="header-right">
+                <div class="secure-badge desktop-only">
+                    <i class="fas fa-lock"></i> Secure Checkout
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         CART & CHECKOUT CONTENT
+         ========================================== -->
+    <main class="main-wrapper cart-page-wrapper section-padding">
+        
+        <!-- Main Cart Title -->
+        <div class="cart-header text-center mb-20">
+            <h1 class="page-title">Your Shopping Bag</h1>
+            <p class="page-subtitle text-muted" id="cartItemCountText">Review your items and complete secure payment.</p>
+        </div>
+
+        <!-- 2-Column Grid for Cart -->
+        <div class="cart-layout-grid">
+            
+            <!-- LEFT COLUMN: CART ITEMS -->
+            <div class="cart-items-section">
+                
+                <!-- EMPTY CART STATE (Hidden by default via CSS class 'hidden') -->
+                <div class="empty-cart-state glass-card text-center hidden" id="emptyCartBox">
+                    <div class="empty-cart-icon float-anim">
+                        <i class="fas fa-shopping-basket"></i>
+                    </div>
+                    <h2>Your bag is empty!</h2>
+                    <p>Looks like you haven't added any premium items yet.</p>
+                    <button class="btn-primary-glow mt-20" onclick="window.location.href='shop.html'">
+                        Continue Shopping <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- CART ITEMS CONTAINER -->
+                <div class="cart-items-container" id="cartItemsList">
+                    
+                    <!-- Skeleton Loader for Cart Items -->
+                    <div class="cart-item-card glass-card skeleton-card flex-row">
+                        <div class="skeleton-img cart-thumb pulse-bg"></div>
+                        <div class="cart-item-details skeleton-content flex-grow">
+                            <div class="skeleton-line long pulse-bg"></div>
+                            <div class="skeleton-line short pulse-bg"></div>
+                            <div class="skeleton-price pulse-bg mt-10"></div>
+                        </div>
+                    </div>
+                    <div class="cart-item-card glass-card skeleton-card flex-row">
+                        <div class="skeleton-img cart-thumb pulse-bg"></div>
+                        <div class="cart-item-details skeleton-content flex-grow">
+                            <div class="skeleton-line long pulse-bg"></div>
+                            <div class="skeleton-line short pulse-bg"></div>
+                            <div class="skeleton-price pulse-bg mt-10"></div>
+                        </div>
+                    </div>
+
+                    <!-- REAL CART ITEM (Example Structure to be populated by JS) -->
+                    <!-- 
+                    <div class="cart-item-card glass-card">
+                        <img src="dummy.jpg" alt="Product" class="cart-item-img">
+                        <div class="cart-item-info">
+                            <h4 class="cart-item-title">Premium Leather Wallet</h4>
+                            <p class="cart-item-variant">Color: Black</p>
+                            <h3 class="cart-item-price">₹1,299</h3>
+                        </div>
+                        <div class="cart-item-actions">
+                            <div class="qty-control glass-input-group small">
+                                <button class="qty-btn"><i class="fas fa-minus"></i></button>
+                                <input type="number" value="1" readonly>
+                                <button class="qty-btn"><i class="fas fa-plus"></i></button>
+                            </div>
+                            <button class="remove-item-btn tooltip-wrapper"><i class="fas fa-trash-alt"></i></button>
+                        </div>
+                    </div> 
+                    -->
+
+                </div>
+            </div>
+
+            <!-- RIGHT COLUMN: ORDER SUMMARY & CHECKOUT -->
+            <div class="checkout-section">
+                
+                <!-- Order Summary Card -->
+                <div class="summary-card glass-card">
+                    <h3 class="summary-title"><i class="fas fa-receipt"></i> Order Summary</h3>
+                    
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span class="skeleton-text" id="summarySubtotal">₹0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span class="text-accent" id="summaryShipping">Free</span>
+                    </div>
+                    
+                    <div class="summary-divider"></div>
+                    
+                    <div class="summary-row total-row">
+                        <span>Total Amount</span>
+                        <span class="skeleton-text font-bold" id="summaryTotal">₹0.00</span>
+                    </div>
+
+                    <!-- Coupon Code Section -->
+                    <div class="coupon-section mt-20">
+                        <div class="input-with-btn">
+                            <input type="text" class="glass-input" id="couponCode" placeholder="Enter Promo Code">
+                            <button class="btn-secondary-solid" id="applyCouponBtn">Apply</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- UPI Payment Flow Card (Manual System) -->
+                <div class="payment-card glass-card mt-20">
+                    <h3 class="payment-title"><i class="fas fa-shield-check text-accent"></i> Secure Checkout</h3>
+                    
+                    <!-- Step 1: Pay -->
+                    <div class="payment-step">
+                        <div class="step-header">
+                            <span class="step-badge">1</span>
+                            <h4>Make UPI Payment</h4>
+                        </div>
+                        <p class="step-desc">Please transfer the exact total amount to the UPI ID below:</p>
+                        
+                        <div class="upi-highlight-box flex-between">
+                            <div class="upi-info">
+                                <span class="upi-label">MK Prime UPI ID:</span>
+                                <strong class="upi-id" id="merchantUpiId">9112923138@ybl</strong>
+                            </div>
+                            <button class="copy-btn tooltip-wrapper" onclick="navigator.clipboard.writeText('9112923138@ybl'); alert('UPI ID Copied!');" aria-label="Copy UPI ID">
+                                <i class="far fa-copy"></i>
+                                <span class="tooltip-text">Copy</span>
+                            </button>
+                        </div>
+                        
+                        <!-- QR Code Placeholder (Admin can replace image in dashboard/hosting) -->
+                        <div class="qr-code-box text-center mt-10">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=9112923138@ybl&pn=MKPrimeConnect&cu=INR" alt="UPI QR Code" class="qr-image">
+                            <p class="qr-note">Scan using GPay, PhonePe, or Paytm</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Details & Confirm -->
+                    <div class="payment-step mt-20">
+                        <div class="step-header">
+                            <span class="step-badge">2</span>
+                            <h4>Shipping & Confirmation</h4>
+                        </div>
+                        
+                        <form id="checkoutForm" class="checkout-form mt-10">
+                            <!-- Shipping Details -->
+                            <div class="form-group">
+                                <label for="custName" class="form-label">Full Name</label>
+                                <input type="text" id="custName" class="glass-input full-width" placeholder="e.g. Rahul Sharma" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="custPhone" class="form-label">Phone Number (WhatsApp preferred)</label>
+                                <input type="tel" id="custPhone" class="glass-input full-width" placeholder="10-digit number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="custAddress" class="form-label">Complete Delivery Address</label>
+                                <textarea id="custAddress" class="glass-input full-width" rows="3" placeholder="House/Flat No., Area, Landmark, City, State, Pincode" required></textarea>
+                            </div>
+
+                            <!-- Payment Proof -->
+                            <div class="form-group mt-15 highlight-input-group">
+                                <label for="utrNumber" class="form-label text-accent font-bold">UPI Transaction ID (UTR / Ref No.) <span class="required">*</span></label>
+                                <input type="text" id="utrNumber" class="glass-input full-width border-accent" placeholder="e.g. 312345678901" required>
+                                <small class="input-hint">Enter the 12-digit reference number after payment.</small>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn-primary-glow full-width btn-large mt-20 hover-lift" id="placeOrderBtn">
+                                Place Order <i class="fas fa-check-circle"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+
+                <!-- Trust Badges -->
+                <div class="checkout-trust-badges mt-15 flex-center">
+                    <span class="trust-pill"><i class="fas fa-lock"></i> 256-bit Secure</span>
+                    <span class="trust-pill"><i class="fas fa-undo"></i> Easy Returns</span>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ==========================================
+         DEEP FOOTER SECTION
+         ========================================== -->
+    <footer class="main-footer mt-40">
+        <div class="footer-grid">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="footer-logo">MK <span class="highlight">PRIME</span></a>
+                <p class="footer-desc">Premium quality, seamless UI, and secure UPI transactions. Your trust is our priority.</p>
+            </div>
+            <div class="footer-col contact-col">
+                <h4>Get in Touch</h4>
+                <ul class="contact-list">
+                    <li><i class="fas fa-phone-alt"></i> +91 9967607756 (Muskan Khan)</li>
+                    <li><i class="fas fa-envelope"></i> mkprimeconnect@gmail.com</li>
+                    <li><i class="fas fa-qrcode"></i> UPI: 9112923138@ybl</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom flex-between text-center">
+            <p class="copyright">&copy; 2026 MK Prime Connect.</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         JAVASCRIPT
+         ========================================== -->
+    <script src="app.js"></script>
+</body>
+</html>
