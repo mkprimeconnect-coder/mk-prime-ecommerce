@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="View product details, premium quality features, and buy securely via UPI at MK Prime Connect.">
+    <meta name="theme-color" content="#111111">
+    <title>Product Details | MK Prime Connect</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MASTER CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="smooth-scroll-enabled">
+
+    <!-- ==========================================
+         MAIN HEADER (Glassmorphism Ready)
+         ========================================== -->
+    <header class="glass-header" id="mainHeader">
+        <div class="header-container">
+            <!-- Back Button for Mobile (Replaces Hamburger on Detail Page) -->
+            <div class="header-left">
+                <button class="icon-btn tooltip-wrapper mobile-back-btn" onclick="history.back()" aria-label="Go Back">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+
+            <div class="header-center brand-container">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-highlight">MK</span>
+                    <span class="brand-text">PRIME</span>
+                </a>
+            </div>
+
+            <div class="header-right action-icons">
+                <button class="icon-btn search-trigger tooltip-wrapper" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn auth-trigger tooltip-wrapper desktop-only" id="headerAuthBtn">
+                    <i class="far fa-user-circle"></i>
+                    <span class="btn-label">Sign In</span>
+                </button>
+                <button class="icon-btn cart-trigger tooltip-wrapper" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge pulse-anim" id="headerCartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         PRODUCT DETAIL CONTENT
+         ========================================== -->
+    <main class="main-wrapper product-page-wrapper">
+        
+        <!-- Breadcrumb Navigation -->
+        <div class="breadcrumb-container section-padding">
+            <div class="breadcrumb">
+                <a href="index.html">Home</a>
+                <i class="fas fa-chevron-right separator"></i>
+                <a href="shop.html">Shop</a>
+                <i class="fas fa-chevron-right separator"></i>
+                <a href="#" id="breadCategory" class="skeleton-text">Category</a>
+                <i class="fas fa-chevron-right separator"></i>
+                <span class="current-page skeleton-text" id="breadProduct">Product Name</span>
+            </div>
+        </div>
+
+        <!-- Main Product Section -->
+        <section class="product-detail-section section-padding">
+            <div class="product-grid-layout">
+                
+                <!-- LEFT: Image Gallery -->
+                <div class="product-gallery">
+                    <!-- Main Image View -->
+                    <div class="main-image-container glass-card image-zoom-wrapper" id="mainImageWrapper">
+                        <!-- Skeleton shows while image loads -->
+                        <div class="skeleton-img pulse-bg full-height"></div>
+                        <img src="" alt="Product Image" class="main-product-img hidden" id="mainProductImage">
+                        <!-- Discount Badge Over Image -->
+                        <div class="overlay-badge discount-badge hidden" id="imageDiscountBadge">-0%</div>
+                    </div>
+                    
+                    <!-- Thumbnails Carousel (Horizontal scroll on mobile) -->
+                    <div class="thumbnail-carousel no-scrollbar" id="thumbnailContainer">
+                        <div class="thumb-box skeleton-img pulse-bg"></div>
+                        <div class="thumb-box skeleton-img pulse-bg"></div>
+                        <div class="thumb-box skeleton-img pulse-bg"></div>
+                    </div>
+                </div>
+
+                <!-- RIGHT: Product Info & Actions -->
+                <div class="product-info-panel">
+                    
+                    <!-- Title & Brand -->
+                    <div class="info-header">
+                        <span class="product-brand uppercase-text skeleton-text" id="productBrand">Premium Collection</span>
+                        <h1 class="product-title skeleton-text" id="productTitle">Loading Product Details...</h1>
+                        
+                        <!-- Ratings -->
+                        <div class="product-rating">
+                            <div class="stars">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star-half-alt filled"></i>
+                            </div>
+                            <span class="review-count">(4.8 / 52 Reviews)</span>
+                        </div>
+                    </div>
+
+                    <!-- Pricing & Stock -->
+                    <div class="price-stock-box glass-container">
+                        <div class="price-row">
+                            <span class="current-price skeleton-text" id="productPrice">₹0.00</span>
+                            <span class="mrp-price skeleton-text hidden" id="productMRP">₹0.00</span>
+                            <span class="save-tag hidden" id="productSavings">Save ₹0</span>
+                        </div>
+                        <div class="stock-status in-stock">
+                            <span class="dot pulse-anim"></span> 
+                            <span id="stockText">In Stock & Ready to Ship</span>
+                        </div>
+                        <p class="tax-note">Inclusive of all taxes. Zero fees on UPI.</p>
+                    </div>
+
+                    <!-- Variant Selection (Colors/Sizes - Hidden if not applicable) -->
+                    <div class="product-variants" id="variantSection">
+                        <div class="variant-group">
+                            <h4 class="variant-title">Select Color: <span class="selected-val" id="colorVal">Black</span></h4>
+                            <div class="color-swatches">
+                                <label class="swatch-label">
+                                    <input type="radio" name="color" value="Black" checked>
+                                    <span class="color-circle" style="background-color: #111;"></span>
+                                </label>
+                                <label class="swatch-label">
+                                    <input type="radio" name="color" value="Silver">
+                                    <span class="color-circle" style="background-color: #c0c0c0;"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quantity Selector -->
+                    <div class="quantity-selector-group">
+                        <h4 class="variant-title">Quantity:</h4>
+                        <div class="qty-control glass-input-group">
+                            <button class="qty-btn minus-btn" aria-label="Decrease Quantity"><i class="fas fa-minus"></i></button>
+                            <input type="number" value="1" min="1" max="10" class="qty-input" id="productQty" readonly>
+                            <button class="qty-btn plus-btn" aria-label="Increase Quantity"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="product-actions-row">
+                        <button class="btn-primary-solid btn-large add-cart-btn hover-lift flex-grow" id="addToCartBtn">
+                            <i class="fas fa-shopping-bag"></i> Add to Cart
+                        </button>
+                        <button class="btn-icon-square glass-btn hover-lift tooltip-wrapper" aria-label="Add to Wishlist">
+                            <i class="far fa-heart"></i>
+                            <span class="tooltip-text">Wishlist</span>
+                        </button>
+                    </div>
+
+                    <!-- Trust Signals for this specific product -->
+                    <div class="product-trust-signals">
+                        <div class="trust-item">
+                            <i class="fas fa-truck-fast text-accent"></i>
+                            <span>Fast Delivery across India</span>
+                        </div>
+                        <div class="trust-item">
+                            <i class="fas fa-shield-check text-accent"></i>
+                            <span>Secure Payment via UPI</span>
+                        </div>
+                        <div class="trust-item">
+                            <i class="fas fa-sync-alt text-accent"></i>
+                            <span>7 Days Replacement Policy</span>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Details (Description, Specs, Shipping) -->
+                    <div class="product-accordion-wrapper mt-20">
+                        <!-- Accordion Item 1 -->
+                        <div class="accordion-item glass-card active">
+                            <button class="accordion-header flex-between">
+                                <span><i class="fas fa-info-circle"></i> Product Description</span>
+                                <i class="fas fa-chevron-down acc-icon"></i>
+                            </button>
+                            <div class="accordion-body">
+                                <div class="accordion-content skeleton-text-block" id="productDescription">
+                                    <div class="skeleton-line full"></div>
+                                    <div class="skeleton-line full"></div>
+                                    <div class="skeleton-line short"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Accordion Item 2 -->
+                        <div class="accordion-item glass-card">
+                            <button class="accordion-header flex-between">
+                                <span><i class="fas fa-list-ul"></i> Specifications</span>
+                                <i class="fas fa-chevron-down acc-icon"></i>
+                            </button>
+                            <div class="accordion-body">
+                                <div class="accordion-content">
+                                    <ul class="spec-list">
+                                        <li><strong>Brand:</strong> MK Prime</li>
+                                        <li><strong>Quality:</strong> Premium AAA+</li>
+                                        <li><strong>Authenticity:</strong> 100% Guaranteed</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- End Info Panel -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ==========================================
+             RELATED PRODUCTS CAROUSEL
+             ========================================== -->
+        <section class="related-products-section section-padding glass-container mt-30">
+            <div class="section-header flex-between">
+                <h2 class="section-title">You May Also Like</h2>
+            </div>
+            
+            <div class="category-scroll-container pb-10" id="relatedProductGrid">
+                <!-- Skeleton Loader Cards (Horizontal Scroll Setup) -->
+                <div class="product-card skeleton-card min-w-200">
+                    <div class="skeleton-img pulse-bg"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton-line short pulse-bg"></div>
+                        <div class="skeleton-line price pulse-bg"></div>
+                    </div>
+                </div>
+                <div class="product-card skeleton-card min-w-200">
+                    <div class="skeleton-img pulse-bg"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton-line short pulse-bg"></div>
+                        <div class="skeleton-line price pulse-bg"></div>
+                    </div>
+                </div>
+                <div class="product-card skeleton-card min-w-200 desktop-only-grid">
+                    <div class="skeleton-img pulse-bg"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton-line short pulse-bg"></div>
+                        <div class="skeleton-line price pulse-bg"></div>
+                    </div>
+                </div>
+                <div class="product-card skeleton-card min-w-200 desktop-only-grid">
+                    <div class="skeleton-img pulse-bg"></div>
+                    <div class="skeleton-content">
+                        <div class="skeleton-line short pulse-bg"></div>
+                        <div class="skeleton-line price pulse-bg"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         DEEP FOOTER SECTION
+         ========================================== -->
+    <footer class="main-footer mt-30">
+        <!-- Exactly same as index.html -->
+        <div class="footer-grid">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="footer-logo">MK <span class="highlight">PRIME</span></a>
+                <p class="footer-desc">Premium quality, seamless UI, and secure UPI transactions. Your trust is our priority.</p>
+            </div>
+            <div class="footer-col contact-col">
+                <h4>Get in Touch</h4>
+                <ul class="contact-list">
+                    <li><i class="fas fa-phone-alt"></i> +91 9967607756 (Muskan Khan)</li>
+                    <li><i class="fas fa-envelope"></i> mkprimeconnect@gmail.com</li>
+                    <li><i class="fas fa-qrcode"></i> UPI: 9112923138@ybl</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom flex-between">
+            <p class="copyright">&copy; 2026 MK Prime Connect.</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         FLOATING ACTIONS & BOTTOM NAV
+         ========================================== -->
+    <div class="floating-actions-wrapper">
+        <a href="mailto:mkprimeconnect@gmail.com" class="float-btn email-float bobbing-anim delay-1" aria-label="Email Support">
+            <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://wa.me/919967607756" target="_blank" class="float-btn whatsapp-float bobbing-anim" aria-label="WhatsApp Support">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Note: On product detail pages, bottom nav is often hidden to keep focus on "Add to Cart", 
+         but we include it here. We will hide it via CSS on scroll or keep it based on final UX preference. -->
+    <nav class="bottom-nav-bar glass-nav">
+        <a href="index.html" class="b-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="shop.html" class="b-nav-item">
+            <i class="fas fa-border-all"></i>
+            <span>Shop</span>
+        </a>
+        <a href="cart.html" class="b-nav-item cart-nav">
+            <div class="b-nav-icon-wrapper">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="b-nav-badge pulse-anim" id="bottomCartCount">0</span>
+            </div>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="b-nav-item auth-trigger" id="bottomAccountBtn">
+            <i class="far fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- AUTH MODAL PLACEHOLDER (Same as Index) -->
+    <!-- (Included in previous files, handled by app.js) -->
+
+    <!-- JAVASCRIPT -->
+    <script src="app.js"></script>
+</body>
+</html>
