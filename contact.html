@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Get in touch with MK Prime Connect. We are here to help you with your premium shopping experience.">
+    <meta name="theme-color" content="#111111">
+    <title>Contact Us | MK Prime Connect</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MASTER CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="smooth-scroll-enabled contact-bg">
+
+    <!-- ==========================================
+         MAIN HEADER (Glassmorphism Ready)
+         ========================================== -->
+    <header class="glass-header" id="mainHeader">
+        <div class="header-container">
+            <div class="header-left mobile-only">
+                <button class="icon-btn menu-toggle" aria-label="Open Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="header-center brand-container">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-highlight">MK</span>
+                    <span class="brand-text">PRIME</span>
+                </a>
+            </div>
+
+            <div class="header-right action-icons">
+                <button class="icon-btn search-trigger tooltip-wrapper" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn auth-trigger tooltip-wrapper desktop-only" id="headerAuthBtn">
+                    <i class="far fa-user-circle"></i>
+                    <span class="btn-label">Sign In</span>
+                </button>
+                <button class="icon-btn cart-trigger tooltip-wrapper" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge pulse-anim" id="headerCartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         CONTACT PAGE CONTENT
+         ========================================== -->
+    <main class="main-wrapper contact-page-wrapper">
+        
+        <!-- Hero Section -->
+        <section class="contact-hero section-padding text-center">
+            <h1 class="page-title">Get in <span class="gradient-text">Touch</span></h1>
+            <p class="page-subtitle mt-10">Have a question about a product, your order, or just want to say hi? We'd love to hear from you.</p>
+        </section>
+
+        <!-- Direct Contact Cards Grid -->
+        <section class="contact-info-grid section-padding pt-0">
+            <!-- WhatsApp / Phone Card -->
+            <div class="contact-card glass-card hover-lift text-center">
+                <div class="contact-icon-wrapper whatsapp-bg">
+                    <i class="fab fa-whatsapp"></i>
+                </div>
+                <h3>Chat with Us</h3>
+                <p class="text-muted text-small mb-15">Fastest response for order queries.</p>
+                <p class="contact-detail font-bold">+91 9967607756</p>
+                <p class="text-small text-accent mt-5">Support by Muskan Khan</p>
+                <a href="https://wa.me/919967607756" target="_blank" class="btn-secondary-outline mt-15 full-width">Message Now</a>
+            </div>
+
+            <!-- Email Card -->
+            <div class="contact-card glass-card hover-lift text-center">
+                <div class="contact-icon-wrapper email-bg">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Email Us</h3>
+                <p class="text-muted text-small mb-15">For detailed enquiries & bulk orders.</p>
+                <p class="contact-detail font-bold">mkprimeconnect@gmail.com</p>
+                <p class="text-small text-muted mt-5">We reply within 24 hours</p>
+                <a href="mailto:mkprimeconnect@gmail.com" class="btn-secondary-outline mt-15 full-width">Send Email</a>
+            </div>
+
+            <!-- Business Hours / Trust Card -->
+            <div class="contact-card glass-card hover-lift text-center">
+                <div class="contact-icon-wrapper hours-bg">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Business Hours</h3>
+                <p class="text-muted text-small mb-15">When we are most active.</p>
+                <ul class="hours-list">
+                    <li class="flex-between"><span>Mon - Sat:</span> <strong>10:00 AM - 8:00 PM</strong></li>
+                    <li class="flex-between"><span>Sunday:</span> <strong>Closed</strong></li>
+                </ul>
+                <div class="secure-trust-badge mt-15">
+                    <i class="fas fa-shield-alt text-accent"></i> 100% Secure Shopping
+                </div>
+            </div>
+        </section>
+
+        <!-- Form and FAQ Section (2 Column Layout on Desktop) -->
+        <section class="contact-form-faq-section section-padding pt-10">
+            <div class="contact-layout-grid">
+                
+                <!-- LEFT: Enquiry Form -->
+                <div class="enquiry-form-container glass-container">
+                    <div class="form-header mb-20">
+                        <h2>Send an Enquiry</h2>
+                        <p class="text-muted">Fill out the form below and our team will get back to you.</p>
+                    </div>
+
+                    <form id="contactForm" class="contact-form">
+                        <div class="form-row flex-row gap-15">
+                            <div class="form-group flex-grow">
+                                <label for="contactName" class="form-label">Full Name <span class="required">*</span></label>
+                                <input type="text" id="contactName" class="glass-input full-width" placeholder="John Doe" required>
+                            </div>
+                            <div class="form-group flex-grow">
+                                <label for="contactPhone" class="form-label">Phone Number</label>
+                                <input type="tel" id="contactPhone" class="glass-input full-width" placeholder="+91 XXXXX XXXXX">
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-15">
+                            <label for="contactEmail" class="form-label">Email Address <span class="required">*</span></label>
+                            <input type="email" id="contactEmail" class="glass-input full-width" placeholder="john@example.com" required>
+                        </div>
+
+                        <div class="form-group mt-15">
+                            <label for="contactSubject" class="form-label">Subject</label>
+                            <div class="custom-select-wrapper full-width">
+                                <select id="contactSubject" class="glass-select full-width">
+                                    <option value="order">Order Tracking/Issue</option>
+                                    <option value="product">Product Enquiry</option>
+                                    <option value="payment">Payment/UPI Issue</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-arrow"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group mt-15">
+                            <label for="contactMessage" class="form-label">Message <span class="required">*</span></label>
+                            <textarea id="contactMessage" class="glass-input full-width" rows="4" placeholder="How can we help you today?" required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn-primary-glow full-width btn-large mt-20 hover-lift" id="submitEnquiryBtn">
+                            Send Message <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- RIGHT: Frequently Asked Questions -->
+                <div class="faq-container">
+                    <h2 class="mb-20">Quick Answers</h2>
+                    
+                    <div class="product-accordion-wrapper">
+                        <!-- FAQ 1 -->
+                        <div class="accordion-item glass-card active">
+                            <button class="accordion-header flex-between">
+                                <span>How do I pay using UPI?</span>
+                                <i class="fas fa-chevron-down acc-icon"></i>
+                            </button>
+                            <div class="accordion-body">
+                                <div class="accordion-content">
+                                    <p>At checkout, you will see our UPI ID <strong>9112923138@ybl</strong>. Simply transfer the exact amount using any app (GPay, PhonePe, Paytm), and enter the 12-digit UTR/Reference number on the checkout page to confirm your order.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- FAQ 2 -->
+                        <div class="accordion-item glass-card">
+                            <button class="accordion-header flex-between">
+                                <span>How long does delivery take?</span>
+                                <i class="fas fa-chevron-down acc-icon"></i>
+                            </button>
+                            <div class="accordion-body">
+                                <div class="accordion-content">
+                                    <p>Standard delivery takes between 3 to 7 business days depending on your location in India. You will receive tracking details via email/WhatsApp once shipped.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- FAQ 3 -->
+                        <div class="accordion-item glass-card">
+                            <button class="accordion-header flex-between">
+                                <span>What is your return policy?</span>
+                                <i class="fas fa-chevron-down acc-icon"></i>
+                            </button>
+                            <div class="accordion-body">
+                                <div class="accordion-content">
+                                    <p>We offer a 7-day replacement policy for defective or damaged items. Please contact our WhatsApp support with an unboxing video to initiate a return.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         DEEP FOOTER SECTION
+         ========================================== -->
+    <footer class="main-footer mt-20">
+        <div class="footer-grid">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="footer-logo">MK <span class="highlight">PRIME</span></a>
+                <p class="footer-desc">Redefining online shopping with premium quality, seamless UI, and secure UPI transactions.</p>
+            </div>
+            <div class="footer-col links-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="shop.html">Shop All</a></li>
+                    <li><a href="trending.html">Trending Now</a></li>
+                    <li><a href="testimonials.html">Customer Reviews</a></li>
+                </ul>
+            </div>
+            <div class="footer-col contact-col">
+                <h4>Get in Touch</h4>
+                <ul class="contact-list">
+                    <li><i class="fas fa-phone-alt"></i> +91 9967607756 (Muskan Khan)</li>
+                    <li><i class="fas fa-envelope"></i> mkprimeconnect@gmail.com</li>
+                    <li><i class="fas fa-qrcode"></i> UPI: 9112923138@ybl</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom flex-between text-center">
+            <p class="copyright">&copy; 2026 MK Prime Connect.</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         FLOATING ACTIONS & BOTTOM NAV
+         ========================================== -->
+    <div class="floating-actions-wrapper">
+        <!-- Kept empty here so it doesn't overlap the cards, or you can keep it as is. -->
+    </div>
+
+    <!-- Normal Bottom Nav -->
+    <nav class="bottom-nav-bar glass-nav">
+        <a href="index.html" class="b-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="shop.html" class="b-nav-item">
+            <i class="fas fa-border-all"></i>
+            <span>Shop</span>
+        </a>
+        <a href="trending.html" class="b-nav-item">
+            <i class="fas fa-fire"></i>
+            <span>Hot</span>
+        </a>
+        <a href="cart.html" class="b-nav-item cart-nav">
+            <div class="b-nav-icon-wrapper">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="b-nav-badge pulse-anim" id="bottomCartCount">0</span>
+            </div>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="b-nav-item auth-trigger" id="bottomAccountBtn">
+            <i class="far fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- AUTHENTICATION MODAL -->
+    <div id="authModal" class="modal-backdrop">
+        <div class="modal-card glass-modal">
+            <button class="modal-close-btn" id="closeAuthBtn"><i class="fas fa-times"></i></button>
+            <div class="modal-header text-center">
+                <h3 class="modal-title">Welcome to MK Prime</h3>
+            </div>
+            <div class="modal-body">
+                <button class="btn-social-auth google-auth hover-lift" id="googleLoginBtn">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="social-icon">
+                    <span>Continue with Google</span>
+                </button>
+                <div class="auth-divider"><span class="divider-text">OR EMAIL</span></div>
+                <form id="emailAuthForm" class="auth-form">
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope icon-left"></i>
+                            <input type="email" class="glass-input" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock icon-left"></i>
+                            <input type="password" class="glass-input" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary-solid full-width hover-lift mt-10">Login / Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="app.js"></script>
+</body>
+</html>
