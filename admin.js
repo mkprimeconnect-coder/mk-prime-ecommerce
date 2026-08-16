@@ -10,6 +10,7 @@ const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/f7ym0acs/image/upload';
 const CLOUDINARY_UPLOAD_PRESET = 'mkprime_preset';
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log("Admin JS Loaded Successfully");
     initAdminAuth();
     initAdminTabs();
     initProductUpload();
@@ -22,10 +23,16 @@ function initAdminAuth() {
     const dashboardLayout = document.getElementById('adminDashboardLayout');
     const logoutBtn = document.getElementById('adminLogoutBtn');
 
-    // Check saved session
+    // Check saved session on load
     if (localStorage.getItem('mkPrimeAdminAuth') === 'true') {
-        if (loginOverlay) loginOverlay.classList.add('hidden');
-        if (dashboardLayout) dashboardLayout.classList.remove('hidden');
+        if (loginOverlay) {
+            loginOverlay.classList.add('hidden');
+            loginOverlay.style.display = 'none';
+        }
+        if (dashboardLayout) {
+            dashboardLayout.classList.remove('hidden');
+            dashboardLayout.style.display = 'flex';
+        }
         fetchDashboardData();
     }
 
@@ -50,8 +57,14 @@ function initAdminAuth() {
             if (email === 'admin@mkprime.com' && password === 'admin123') {
                 localStorage.setItem('mkPrimeAdminAuth', 'true');
                 
-                if (loginOverlay) loginOverlay.classList.add('hidden');
-                if (dashboardLayout) dashboardLayout.classList.remove('hidden');
+                if (loginOverlay) {
+                    loginOverlay.classList.add('hidden');
+                    loginOverlay.style.display = 'none';
+                }
+                if (dashboardLayout) {
+                    dashboardLayout.classList.remove('hidden');
+                    dashboardLayout.style.display = 'flex';
+                }
                 
                 fetchDashboardData();
                 alert('Login Successful! Welcome to Admin Panel.');
