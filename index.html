@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MK Prime Connect | Premium E-Commerce</title>
+    
+    <!-- Premium Google Fonts: Poppins for Headings, Inter for Text -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase JS Library (For Backend later) -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+    <!-- 1. TOP HEADER (Premium & Clean) -->
+    <header class="top-header">
+        <div class="header-left">
+            <!-- Brand Name / Logo -->
+            <a href="index.html" class="brand-logo-text">
+                <span class="mk-text">MK</span> PRIME
+            </a>
+        </div>
+        <div class="header-right">
+            <!-- Search Icon -->
+            <button class="icon-btn search-trigger" aria-label="Search">
+                <i class="fas fa-search"></i>
+            </button>
+            
+            <!-- Login/Signup in Top Right -->
+            <button class="icon-btn auth-trigger" id="topLoginBtn" aria-label="Login or Signup">
+                <i class="far fa-user-circle"></i>
+                <span class="btn-text">Sign In</span>
+            </button>
+            
+            <!-- Cart Icon -->
+            <button class="icon-btn cart-trigger" onclick="window.location.href='cart.html'" aria-label="Cart">
+                <i class="fas fa-shopping-bag"></i>
+                <span class="cart-badge" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- 2. MAIN CONTENT AREA (Digital Business Card Vibe) -->
+    <main class="main-content">
+        
+        <!-- A. Hero Banner / Business Card Presentation -->
+        <section class="hero-business-card">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h2 class="hero-title">Elevate Your Lifestyle</h2>
+                <p class="hero-subtitle">Welcome to MK Prime Connect. Handpicked premium collections just for you.</p>
+                <div class="hero-actions">
+                    <button class="btn-primary-large" onclick="window.location.href='shop.html'">Explore Collection <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- B. Brand Trust / Features Section -->
+        <section class="brand-features">
+            <div class="feature-box">
+                <i class="fas fa-gem"></i>
+                <span>Premium Quality</span>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-shield-alt"></i>
+                <span>Secure UPI</span>
+            </div>
+            <div class="feature-box">
+                <i class="fas fa-headset"></i>
+                <span>24/7 Support</span>
+            </div>
+        </section>
+
+        <!-- C. Top Categories (Horizontal Scroll - Nykaa Style) -->
+        <section class="categories-section">
+            <div class="section-heading">
+                <h3>Shop by Category</h3>
+            </div>
+            <div class="category-scroll-container">
+                <div class="category-card">
+                    <div class="category-icon-bg"><i class="fas fa-tshirt"></i></div>
+                    <span class="category-name">Apparel</span>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon-bg"><i class="fas fa-mobile-alt"></i></div>
+                    <span class="category-name">Gadgets</span>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon-bg"><i class="fas fa-gift"></i></div>
+                    <span class="category-name">Gifts</span>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon-bg"><i class="fas fa-glasses"></i></div>
+                    <span class="category-name">Lifestyle</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- D. Trending Products Preview -->
+        <section class="trending-section">
+            <div class="section-heading flex-heading">
+                <h3>Trending Now</h3>
+                <a href="trending.html" class="view-all-link">View All <i class="fas fa-chevron-right"></i></a>
+            </div>
+            <!-- Product Grid Placeholder (Filled by app.js later) -->
+            <div class="product-grid" id="trendingProductGrid">
+                <div class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i> Loading premium products...
+                </div>
+            </div>
+        </section>
+
+        <!-- E. Footer / Business Details -->
+        <footer class="home-footer">
+            <div class="footer-brand">
+                <h3>MK Prime Connect</h3>
+                <p>Delivering excellence to your doorstep.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </footer>
+        
+    </main>
+
+    <!-- 3. FLOATING CONTACT BUTTONS (Muskan Khan Support) -->
+    <div class="floating-contact-container">
+        <a href="mailto:mkprimeconnect@gmail.com" class="float-btn email-btn" aria-label="Email Support">
+            <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://wa.me/919967607756?text=Hi%20Muskan,%20I%20am%20interested%20in%20your%20premium%20collection." target="_blank" class="float-btn whatsapp-btn" aria-label="WhatsApp Support">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- 4. BOTTOM NAVIGATION (Fixed for Mobile Only) -->
+    <nav class="bottom-nav">
+        <a href="index.html" class="nav-item active">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="shop.html" class="nav-item">
+            <i class="fas fa-th-large"></i>
+            <span>Shop</span>
+        </a>
+        <a href="trending.html" class="nav-item">
+            <i class="fas fa-fire"></i>
+            <span>Trending</span>
+        </a>
+        <a href="cart.html" class="nav-item nav-cart">
+            <div class="nav-cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="nav-badge" id="bottomCartCount">0</span>
+            </div>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="nav-item auth-trigger" id="bottomAccountBtn">
+            <i class="far fa-user"></i>
+            <span>Account</span>
+        </a>
+    </nav>
+
+    <!-- 5. AUTHENTICATION MODAL (Hidden by default, opens on clicking Sign In / Account) -->
+    <div id="authModal" class="modal-overlay">
+        <div class="modal-box">
+            <button class="close-modal" id="closeAuthBtn"><i class="fas fa-times"></i></button>
+            
+            <div class="modal-header">
+                <h3>Welcome Back</h3>
+                <p>Login or Signup to continue</p>
+            </div>
+
+            <!-- Google Login Button -->
+            <button class="btn-google" id="googleLoginBtn">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google Logo">
+                Continue with Google
+            </button>
+
+            <div class="divider">
+                <span>OR</span>
+            </div>
+
+            <!-- Email Login Form -->
+            <form id="emailAuthForm" class="auth-form">
+                <div class="input-group">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" id="userEmail" placeholder="Email Address" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="userPassword" placeholder="Password" required>
+                </div>
+                
+                <button type="submit" class="btn-primary">Login / Signup</button>
+            </form>
+
+            <div class="modal-footer">
+                <p>By continuing, you agree to our <a href="#">Privacy Policy</a>.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main JavaScript File -->
+    <script src="app.js"></script>
+</body>
+</html>
