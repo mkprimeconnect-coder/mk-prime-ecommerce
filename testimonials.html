@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Read what our satisfied customers have to say about MK Prime Connect's premium products and services.">
+    <meta name="theme-color" content="#111111">
+    <title>Customer Reviews | MK Prime Connect</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MASTER CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="smooth-scroll-enabled reviews-bg">
+
+    <!-- ==========================================
+         MAIN HEADER (Glassmorphism Ready)
+         ========================================== -->
+    <header class="glass-header" id="mainHeader">
+        <div class="header-container">
+            <div class="header-left mobile-only">
+                <button class="icon-btn menu-toggle" aria-label="Open Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="header-center brand-container">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-highlight">MK</span>
+                    <span class="brand-text">PRIME</span>
+                </a>
+            </div>
+
+            <div class="header-right action-icons">
+                <button class="icon-btn search-trigger tooltip-wrapper" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn auth-trigger tooltip-wrapper desktop-only" id="headerAuthBtn">
+                    <i class="far fa-user-circle"></i>
+                    <span class="btn-label">Sign In</span>
+                </button>
+                <button class="icon-btn cart-trigger tooltip-wrapper" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge pulse-anim" id="headerCartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         TESTIMONIALS CONTENT
+         ========================================== -->
+    <main class="main-wrapper testimonials-page-wrapper">
+        
+        <!-- Hero Section for Reviews -->
+        <section class="reviews-hero section-padding text-center">
+            <h1 class="page-title">Real People. <span class="gradient-text">Real Stories.</span></h1>
+            <p class="page-subtitle mt-10">See why thousands of customers choose MK Prime Connect for their premium lifestyle needs.</p>
+            
+            <!-- Trust Stats Box -->
+            <div class="trust-stats-container glass-container mt-20 flex-center">
+                <div class="stat-box">
+                    <h2 class="stat-number">4.8</h2>
+                    <div class="stars text-accent">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="stat-label">Average Rating</p>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="stat-box">
+                    <h2 class="stat-number">10k+</h2>
+                    <div class="stat-icon text-accent"><i class="fas fa-heart pulse-anim"></i></div>
+                    <p class="stat-label">Happy Customers</p>
+                </div>
+                <div class="stat-divider desktop-only"></div>
+                <div class="stat-box desktop-only">
+                    <h2 class="stat-number">99%</h2>
+                    <div class="stat-icon text-accent"><i class="fas fa-truck-fast"></i></div>
+                    <p class="stat-label">On-Time Delivery</p>
+                </div>
+            </div>
+            
+            <button class="btn-primary-glow mt-30 hover-lift" id="writeReviewBtn">
+                <i class="fas fa-pen"></i> Write a Review
+            </button>
+        </section>
+
+        <!-- Filters for Reviews -->
+        <div class="review-filters flex-center pb-20 border-bottom">
+            <div class="custom-select-wrapper">
+                <select class="glass-select" id="reviewFilter">
+                    <option value="newest">Newest First</option>
+                    <option value="highest">Highest Rated</option>
+                    <option value="with-images">With Images</option>
+                </select>
+                <i class="fas fa-chevron-down select-arrow"></i>
+            </div>
+        </div>
+
+        <!-- Reviews Grid -->
+        <section class="reviews-grid-section section-padding pt-20">
+            
+            <div class="reviews-masonry-grid" id="reviewsContainer">
+                
+                <!-- Skeleton Loader 1 -->
+                <div class="review-card glass-card skeleton-card">
+                    <div class="review-header flex-between mb-15">
+                        <div class="reviewer-info flex-row">
+                            <div class="skeleton-circle avatar-skeleton pulse-bg"></div>
+                            <div>
+                                <div class="skeleton-line short pulse-bg"></div>
+                                <div class="skeleton-line tiny pulse-bg mt-5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skeleton-line long pulse-bg"></div>
+                    <div class="skeleton-line full pulse-bg"></div>
+                    <div class="skeleton-line short pulse-bg"></div>
+                </div>
+
+                <!-- Skeleton Loader 2 -->
+                <div class="review-card glass-card skeleton-card">
+                    <div class="review-header flex-between mb-15">
+                        <div class="reviewer-info flex-row">
+                            <div class="skeleton-circle avatar-skeleton pulse-bg"></div>
+                            <div>
+                                <div class="skeleton-line short pulse-bg"></div>
+                                <div class="skeleton-line tiny pulse-bg mt-5"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skeleton-line long pulse-bg"></div>
+                    <div class="skeleton-line full pulse-bg"></div>
+                    <div class="skeleton-line full pulse-bg"></div>
+                    <div class="skeleton-line short pulse-bg"></div>
+                </div>
+
+                <!-- HARDCODED DEMO REVIEW 1 (For visual reference until JS loads data) -->
+                <div class="review-card glass-card hover-lift">
+                    <div class="review-header flex-between mb-15">
+                        <div class="reviewer-profile flex-row align-center">
+                            <div class="reviewer-avatar bg-accent text-white">R</div>
+                            <div class="reviewer-details ml-10">
+                                <h4 class="reviewer-name">Rahul S.</h4>
+                                <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified Buyer</span>
+                            </div>
+                        </div>
+                        <div class="review-date text-muted text-small">Oct 12, 2026</div>
+                    </div>
+                    <div class="review-stars text-accent mb-10">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <h5 class="review-title mb-5">Absolutely Premium Quality!</h5>
+                    <p class="review-body text-muted">"I ordered the leather wallet and a smartwatch. The packaging was top-notch, and the quality exceeded my expectations. Also, the UPI checkout was super smooth without any extra fees."</p>
+                    <div class="review-product-tag mt-15">
+                        <span class="tag glass-badge"><i class="fas fa-box"></i> Premium Leather Wallet</span>
+                    </div>
+                </div>
+
+                <!-- HARDCODED DEMO REVIEW 2 -->
+                <div class="review-card glass-card hover-lift">
+                    <div class="review-header flex-between mb-15">
+                        <div class="reviewer-profile flex-row align-center">
+                            <!-- Using UI Faces placeholder for a more real look -->
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya" class="reviewer-avatar-img">
+                            <div class="reviewer-details ml-10">
+                                <h4 class="reviewer-name">Priya M.</h4>
+                                <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified Buyer</span>
+                            </div>
+                        </div>
+                        <div class="review-date text-muted text-small">Oct 05, 2026</div>
+                    </div>
+                    <div class="review-stars text-accent mb-10">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i>
+                    </div>
+                    <h5 class="review-title mb-5">Great customer support</h5>
+                    <p class="review-body text-muted">"I had a query regarding my order size. I messaged on WhatsApp and Muskan replied within minutes. Solved my issue instantly. Highly recommend MK Prime Connect for their service!"</p>
+                    <div class="review-product-tag mt-15">
+                        <span class="tag glass-badge"><i class="fas fa-headset"></i> Support Interaction</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Load More -->
+            <div class="text-center mt-30">
+                <button class="btn-secondary-outline hover-lift" id="loadMoreReviewsBtn">
+                    Load More Reviews <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+            
+        </section>
+    </main>
+
+    <!-- ==========================================
+         DEEP FOOTER SECTION
+         ========================================== -->
+    <footer class="main-footer mt-20">
+        <div class="footer-grid">
+            <div class="footer-col brand-col">
+                <a href="index.html" class="footer-logo">MK <span class="highlight">PRIME</span></a>
+                <p class="footer-desc">Redefining online shopping with premium quality, seamless UI, and secure UPI transactions.</p>
+            </div>
+            <div class="footer-col links-col">
+                <h4>Explore</h4>
+                <ul>
+                    <li><a href="shop.html">Shop All</a></li>
+                    <li><a href="trending.html">Trending Now</a></li>
+                    <li><a href="testimonials.html">Customer Reviews</a></li>
+                </ul>
+            </div>
+            <div class="footer-col contact-col">
+                <h4>Get in Touch</h4>
+                <ul class="contact-list">
+                    <li><i class="fas fa-phone-alt"></i> +91 9967607756 (Muskan Khan)</li>
+                    <li><i class="fas fa-envelope"></i> mkprimeconnect@gmail.com</li>
+                    <li><i class="fas fa-qrcode"></i> UPI: 9112923138@ybl</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom flex-between text-center">
+            <p class="copyright">&copy; 2026 MK Prime Connect.</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         FLOATING ACTIONS & BOTTOM NAV
+         ========================================== -->
+    <div class="floating-actions-wrapper">
+        <a href="mailto:mkprimeconnect@gmail.com" class="float-btn email-float bobbing-anim delay-1" aria-label="Email Support">
+            <i class="fas fa-envelope"></i>
+        </a>
+        <a href="https://wa.me/919967607756" target="_blank" class="float-btn whatsapp-float bobbing-anim" aria-label="WhatsApp Support">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+    </div>
+
+    <!-- Normal Bottom Nav (No active state for testimonials to keep focus clean) -->
+    <nav class="bottom-nav-bar glass-nav">
+        <a href="index.html" class="b-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="shop.html" class="b-nav-item">
+            <i class="fas fa-border-all"></i>
+            <span>Shop</span>
+        </a>
+        <a href="trending.html" class="b-nav-item">
+            <i class="fas fa-fire"></i>
+            <span>Hot</span>
+        </a>
+        <a href="cart.html" class="b-nav-item cart-nav">
+            <div class="b-nav-icon-wrapper">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="b-nav-badge pulse-anim" id="bottomCartCount">0</span>
+            </div>
+            <span>Cart</span>
+        </a>
+        <a href="#" class="b-nav-item auth-trigger" id="bottomAccountBtn">
+            <i class="far fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- AUTHENTICATION MODAL (Same as previous) -->
+    <div id="authModal" class="modal-backdrop">
+        <div class="modal-card glass-modal">
+            <button class="modal-close-btn" id="closeAuthBtn"><i class="fas fa-times"></i></button>
+            <div class="modal-header text-center">
+                <h3 class="modal-title">Welcome to MK Prime</h3>
+            </div>
+            <div class="modal-body">
+                <button class="btn-social-auth google-auth hover-lift" id="googleLoginBtn">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="social-icon">
+                    <span>Continue with Google</span>
+                </button>
+                <div class="auth-divider"><span class="divider-text">OR EMAIL</span></div>
+                <form id="emailAuthForm" class="auth-form">
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-envelope icon-left"></i>
+                            <input type="email" class="glass-input" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="input-with-icon">
+                            <i class="fas fa-lock icon-left"></i>
+                            <input type="password" class="glass-input" placeholder="Enter your password" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary-solid full-width hover-lift mt-10">Login / Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script src="app.js"></script>
+</body>
+</html>
