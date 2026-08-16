@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Manage your orders, profile, and wishlist at MK Prime Connect.">
+    <meta name="theme-color" content="#111111">
+    <title>My Dashboard | MK Prime Connect</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- MASTER CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="smooth-scroll-enabled dashboard-bg">
+
+    <!-- ==========================================
+         MAIN HEADER (Glassmorphism Ready)
+         ========================================== -->
+    <header class="glass-header" id="mainHeader">
+        <div class="header-container">
+            <div class="header-left mobile-only">
+                <!-- On dashboard, this might toggle the sidebar -->
+                <button class="icon-btn tooltip-wrapper" id="dashboardMenuBtn" aria-label="Dashboard Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+
+            <div class="header-center brand-container">
+                <a href="index.html" class="brand-link">
+                    <span class="brand-highlight">MK</span>
+                    <span class="brand-text">PRIME</span>
+                </a>
+            </div>
+
+            <div class="header-right action-icons">
+                <button class="icon-btn search-trigger tooltip-wrapper" aria-label="Search">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="icon-btn cart-trigger tooltip-wrapper" onclick="window.location.href='cart.html'">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-badge pulse-anim" id="headerCartCount">0</span>
+                </button>
+                <!-- Logged in state avatar -->
+                <button class="icon-btn tooltip-wrapper desktop-only active-user-icon">
+                    <img src="https://ui-avatars.com/api/?name=User&background=111&color=fff" alt="Profile" class="header-avatar">
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==========================================
+         DASHBOARD CONTENT
+         ========================================== -->
+    <main class="main-wrapper dashboard-wrapper section-padding">
+        
+        <div class="dashboard-layout-grid">
+            
+            <!-- LEFT: DASHBOARD SIDEBAR -->
+            <aside class="dashboard-sidebar glass-container" id="dashboardSidebar">
+                
+                <!-- User Profile Summary -->
+                <div class="user-profile-summary text-center">
+                    <div class="avatar-wrapper">
+                        <!-- Skeleton shows while loading -->
+                        <div class="skeleton-circle profile-skeleton pulse-bg"></div>
+                        <img src="https://ui-avatars.com/api/?name=Customer&background=e50046&color=fff" alt="User Avatar" class="user-avatar-img hidden" id="dashAvatar">
+                    </div>
+                    <h3 class="user-name skeleton-text mt-10" id="dashName">Loading User...</h3>
+                    <p class="user-email text-muted text-small skeleton-text" id="dashEmail">user@example.com</p>
+                    <div class="vip-badge mt-10">
+                        <i class="fas fa-crown text-accent"></i> MK Prime Member
+                    </div>
+                </div>
+
+                <div class="sidebar-divider"></div>
+
+                <!-- Navigation Menu -->
+                <nav class="dashboard-nav">
+                    <a href="#overview" class="dash-nav-item active" data-tab="overview">
+                        <i class="fas fa-th-large"></i> Dashboard
+                    </a>
+                    <a href="#orders" class="dash-nav-item" data-tab="orders">
+                        <i class="fas fa-box-open"></i> My Orders
+                    </a>
+                    <a href="#wishlist" class="dash-nav-item" data-tab="wishlist">
+                        <i class="fas fa-heart"></i> Wishlist
+                    </a>
+                    <a href="#addresses" class="dash-nav-item" data-tab="addresses">
+                        <i class="fas fa-map-marker-alt"></i> Saved Addresses
+                    </a>
+                    <a href="#settings" class="dash-nav-item" data-tab="settings">
+                        <i class="fas fa-cog"></i> Account Settings
+                    </a>
+                </nav>
+
+                <div class="sidebar-divider"></div>
+
+                <button class="btn-logout flex-row hover-lift" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Sign Out
+                </button>
+            </aside>
+
+            <!-- RIGHT: MAIN DASHBOARD CONTENT -->
+            <div class="dashboard-main-content">
+                
+                <!-- TAB 1: OVERVIEW -->
+                <div class="dash-tab-content active" id="tab-overview">
+                    <div class="dash-header mb-20 flex-between align-center">
+                        <div>
+                            <h1 class="page-title">Welcome Back, <span id="welcomeName" class="gradient-text">Customer</span>!</h1>
+                            <p class="text-muted">Here is what's happening with your account.</p>
+                        </div>
+                    </div>
+
+                    <!-- Quick Stats Grid -->
+                    <div class="quick-stats-grid mb-30">
+                        <div class="stat-card glass-card hover-lift">
+                            <div class="stat-icon-wrapper blue-bg"><i class="fas fa-shopping-bag"></i></div>
+                            <div class="stat-info">
+                                <h3>Total Orders</h3>
+                                <h2 class="skeleton-text" id="statTotalOrders">0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card hover-lift">
+                            <div class="stat-icon-wrapper orange-bg"><i class="fas fa-truck-loading"></i></div>
+                            <div class="stat-info">
+                                <h3>Processing</h3>
+                                <h2 class="skeleton-text" id="statProcessing">0</h2>
+                            </div>
+                        </div>
+                        <div class="stat-card glass-card hover-lift">
+                            <div class="stat-icon-wrapper pink-bg"><i class="fas fa-heart"></i></div>
+                            <div class="stat-info">
+                                <h3>Wishlist Items</h3>
+                                <h2 class="skeleton-text" id="statWishlist">0</h2>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders Preview -->
+                    <div class="recent-orders-section glass-container p-20">
+                        <div class="flex-between align-center mb-15">
+                            <h2>Recent Orders</h2>
+                            <a href="#orders" class="text-accent link-hover switch-tab-btn" data-target="orders">View All <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        
+                        <div class="orders-list" id="recentOrdersList">
+                            <!-- Skeleton Loader for Orders -->
+                            <div class="order-card-skeleton flex-row glass-card mb-15 p-15">
+                                <div class="skeleton-img pulse-bg order-thumb"></div>
+                                <div class="flex-grow ml-15">
+                                    <div class="skeleton-line long pulse-bg mb-10"></div>
+                                    <div class="skeleton-line short pulse-bg"></div>
+                                </div>
+                                <div class="text-right">
+                                    <div class="skeleton-badge pulse-bg mb-10"></div>
+                                    <div class="skeleton-line tiny pulse-bg"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Dummy Data (Replaced by JS later) -->
+                            <div class="order-card real-order flex-between align-center glass-card hover-lift mb-15 p-15 hidden">
+                                <div class="order-basic-info flex-row align-center">
+                                    <div class="order-icon bg-light"><i class="fas fa-box text-accent"></i></div>
+                                    <div class="ml-15">
+                                        <h4 class="font-bold">Order #MK-8923</h4>
+                                        <p class="text-small text-muted">Placed on 14 Oct, 2026</p>
+                                    </div>
+                                </div>
+                                <div class="order-status-price text-right">
+                                    <span class="status-badge status-processing">Processing</span>
+                                    <p class="font-bold mt-5">₹2,499</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: MY ORDERS (Detailed List) -->
+                <div class="dash-tab-content hidden" id="tab-orders">
+                    <h2 class="mb-20">Order History</h2>
+                    
+                    <div class="orders-full-list" id="allOrdersList">
+                        <!-- Detailed Order Card -->
+                        <div class="detailed-order-card glass-card mb-20">
+                            <div class="order-card-header flex-between border-bottom p-15">
+                                <div>
+                                    <span class="text-muted text-small">Order ID</span>
+                                    <h4 class="font-bold">#MK-8923</h4>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-muted text-small">Total Amount</span>
+                                    <h4 class="font-bold">₹2,499</h4>
+                                </div>
+                                <div class="text-right desktop-only">
+                                    <span class="text-muted text-small">Status</span>
+                                    <span class="status-badge status-processing mt-5">Processing</span>
+                                </div>
+                            </div>
+                            
+                            <div class="order-items-preview p-15 flex-row">
+                                <div class="order-item-img mr-15">
+                                    <div class="img-placeholder bg-light flex-center"><i class="fas fa-headphones text-muted"></i></div>
+                                </div>
+                                <div class="order-item-details">
+                                    <h4 class="font-bold">Noise-Canceling Earbuds</h4>
+                                    <p class="text-muted text-small">Qty: 1 | Color: Midnight Black</p>
+                                </div>
+                            </div>
+                            
+                            <div class="order-card-footer flex-between border-top p-15 bg-light-alt">
+                                <span class="text-small text-muted mobile-only">Status: Processing</span>
+                                <button class="btn-secondary-outline text-small">Track Order</button>
+                                <button class="btn-primary-outline text-small">Need Help?</button>
+                            </div>
+                        </div>
+
+                        <!-- Empty State if no orders -->
+                        <div class="empty-state text-center hidden p-40 glass-container" id="noOrdersState">
+                            <i class="fas fa-box-open text-muted" style="font-size: 3rem; margin-bottom: 15px;"></i>
+                            <h3>No Orders Yet</h3>
+                            <p class="text-muted mt-10 mb-20">You haven't placed any orders. Start exploring our premium collection.</p>
+                            <button class="btn-primary-glow" onclick="window.location.href='shop.html'">Start Shopping</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: ACCOUNT SETTINGS -->
+                <div class="dash-tab-content hidden" id="tab-settings">
+                    <h2 class="mb-20">Account Settings</h2>
+                    
+                    <div class="settings-form-wrapper glass-container p-30">
+                        <form id="profileUpdateForm">
+                            <h4 class="mb-15 border-bottom pb-10">Personal Information</h4>
+                            
+                            <div class="form-row flex-row gap-20 mb-20">
+                                <div class="form-group flex-grow">
+                                    <label class="form-label">Full Name</label>
+                                    <input type="text" class="glass-input full-width" id="settingName" placeholder="Your Name">
+                                </div>
+                                <div class="form-group flex-grow">
+                                    <label class="form-label">Phone Number</label>
+                                    <input type="tel" class="glass-input full-width" id="settingPhone" placeholder="+91">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group mb-20">
+                                <label class="form-label">Email Address (Cannot be changed)</label>
+                                <input type="email" class="glass-input full-width" id="settingEmail" disabled>
+                            </div>
+
+                            <button type="submit" class="btn-primary-solid hover-lift mt-10">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ==========================================
+         DEEP FOOTER SECTION
+         ========================================== -->
+    <footer class="main-footer mt-20">
+        <!-- Kept minimal for dashboard -->
+        <div class="footer-bottom flex-between text-center border-top-0 pt-20">
+            <p class="copyright">&copy; 2026 MK Prime Connect. All Rights Reserved.</p>
+            <div class="payment-methods desktop-only">
+                <span class="upi-text font-bold">Secure UPI Payments</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+         BOTTOM NAVIGATION (Mobile Only - Active Profile)
+         ========================================== -->
+    <nav class="bottom-nav-bar glass-nav">
+        <a href="index.html" class="b-nav-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="shop.html" class="b-nav-item">
+            <i class="fas fa-border-all"></i>
+            <span>Shop</span>
+        </a>
+        <a href="cart.html" class="b-nav-item cart-nav">
+            <div class="b-nav-icon-wrapper">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="b-nav-badge pulse-anim" id="bottomCartCount">0</span>
+            </div>
+            <span>Cart</span>
+        </a>
+        <a href="dashboard.html" class="b-nav-item active">
+            <i class="fas fa-user-circle"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <!-- JAVASCRIPT -->
+    <script src="app.js"></script>
+</body>
+</html>
