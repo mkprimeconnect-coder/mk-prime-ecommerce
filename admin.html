@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="robots" content="noindex, nofollow"> <!-- Prevent Google from indexing Admin page -->
+    <title>Admin Dashboard | MK Prime Connect</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome 6 for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ADMIN CSS (Different from customer css) -->
+    <link rel="stylesheet" href="admin.css">
+
+    <!-- Supabase JS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="admin-body">
+
+    <!-- ==========================================
+         ADMIN LOGIN OVERLAY (Shows if not logged in)
+         ========================================== -->
+    <div id="adminLoginOverlay" class="admin-login-wrapper active">
+        <div class="admin-login-box">
+            <div class="text-center mb-20">
+                <h2>MK <span class="text-accent">PRIME</span></h2>
+                <p class="text-muted">Secure Admin Portal</p>
+            </div>
+            <form id="adminLoginForm">
+                <div class="form-group mb-15">
+                    <label class="form-label">Admin Email</label>
+                    <input type="email" id="adminEmail" class="admin-input full-width" placeholder="admin@mkprime.com" required>
+                </div>
+                <div class="form-group mb-20">
+                    <label class="form-label">Password</label>
+                    <input type="password" id="adminPassword" class="admin-input full-width" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn-admin-primary full-width" id="adminLoginBtn">
+                    Login to Dashboard <i class="fas fa-lock"></i>
+                </button>
+            </form>
+            <p class="text-center text-small text-muted mt-15"><i class="fas fa-shield-alt"></i> 256-bit Encrypted Connection</p>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         ADMIN DASHBOARD LAYOUT (Hidden until login)
+         ========================================== -->
+    <div class="admin-layout hidden" id="adminDashboardLayout">
+        
+        <!-- SIDEBAR -->
+        <aside class="admin-sidebar" id="adminSidebar">
+            <div class="sidebar-brand">
+                <h2>MK <span class="text-accent">PRIME</span></h2>
+                <span class="badge-admin">AdminPanel</span>
+                <button class="mobile-close-sidebar mobile-only icon-btn" id="closeSidebarBtn"><i class="fas fa-times"></i></button>
+            </div>
+            
+            <nav class="admin-nav mt-20">
+                <p class="nav-heading">MAIN MENU</p>
+                <a href="#dashboard" class="admin-nav-item active" data-target="panel-dashboard">
+                    <i class="fas fa-chart-pie"></i> Overview
+                </a>
+                <a href="#orders" class="admin-nav-item" data-target="panel-orders">
+                    <i class="fas fa-shopping-cart"></i> Orders 
+                    <span class="notification-badge" id="pendingOrdersBadge">0</span>
+                </a>
+                
+                <p class="nav-heading mt-20">CATALOG</p>
+                <a href="#products" class="admin-nav-item" data-target="panel-products">
+                    <i class="fas fa-box-open"></i> All Products
+                </a>
+                <a href="#add-product" class="admin-nav-item" data-target="panel-add-product">
+                    <i class="fas fa-plus-circle"></i> Add New Product
+                </a>
+                
+                <p class="nav-heading mt-20">SYSTEM</p>
+                <a href="#customers" class="admin-nav-item" data-target="panel-customers">
+                    <i class="fas fa-users"></i> Customers
+                </a>
+                <a href="#" class="admin-nav-item text-danger mt-30" id="adminLogoutBtn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+            </nav>
+        </aside>
+
+        <!-- MAIN CONTENT AREA -->
+        <div class="admin-main">
+            
+            <!-- TOP NAVBAR -->
+            <header class="admin-topbar flex-between">
+                <div class="topbar-left flex-row align-center">
+                    <button class="icon-btn mr-15 mobile-only" id="openSidebarBtn"><i class="fas fa-bars"></i></button>
+                    <div class="admin-search-box desktop-only">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search orders, products by ID...">
+                    </div>
+                </div>
+                <div class="topbar-right flex-row align-center">
+                    <a href="index.html" target="_blank" class="btn-admin-outline mr-15 tooltip-wrapper">
+                        <i class="fas fa-external-link-alt"></i>
+                        <span class="tooltip-text">View Live Site</span>
+                    </a>
+                    <div class="admin-profile flex-row align-center">
+                        <div class="avatar-circle">M</div>
+                        <span class="ml-10 font-bold desktop-only">Muskan Khan</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CONTENT PANELS -->
+            <div class="admin-content-wrapper p-20">
+                
+                <!-- 1. DASHBOARD OVERVIEW PANEL -->
+                <div class="admin-panel active" id="panel-dashboard">
+                    <div class="flex-between mb-20 align-center">
+                        <h2 class="panel-title">Dashboard Overview</h2>
+                        <button class="btn-admin-secondary btn-small" id="refreshStatsBtn"><i class="fas fa-sync-alt"></i> Refresh</button>
+                    </div>
+
+                    <!-- KPI Stats Cards -->
+                    <div class="kpi-grid mb-30">
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-green"><i class="fas fa-rupee-sign"></i></div>
+                            <div class="kpi-data">
+                                <p class="kpi-title">Total Revenue</p>
+                                <h3 class="kpi-value" id="kpiRevenue">₹0</h3>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-blue"><i class="fas fa-shopping-bag"></i></div>
+                            <div class="kpi-data">
+                                <p class="kpi-title">Total Orders</p>
+                                <h3 class="kpi-value" id="kpiOrders">0</h3>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-orange"><i class="fas fa-clock"></i></div>
+                            <div class="kpi-data">
+                                <p class="kpi-title">Pending Orders</p>
+                                <h3 class="kpi-value" id="kpiPending">0</h3>
+                            </div>
+                        </div>
+                        <div class="kpi-card">
+                            <div class="kpi-icon bg-purple"><i class="fas fa-box"></i></div>
+                            <div class="kpi-data">
+                                <p class="kpi-title">Live Products</p>
+                                <h3 class="kpi-value" id="kpiProducts">0</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Orders Table Preview -->
+                    <div class="admin-card">
+                        <div class="card-header flex-between">
+                            <h3>Recent Orders</h3>
+                            <button class="btn-text" onclick="document.querySelector('[data-target=\'panel-orders\']').click()">View All</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dashboardRecentOrders">
+                                    <!-- Skeletons -->
+                                    <tr>
+                                        <td><div class="skeleton-line short pulse-bg"></div></td>
+                                        <td><div class="skeleton-line pulse-bg"></div></td>
+                                        <td><div class="skeleton-line short pulse-bg"></div></td>
+                                        <td><div class="skeleton-badge pulse-bg"></div></td>
+                                        <td><div class="skeleton-circle small pulse-bg"></div></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. ORDERS MANAGEMENT PANEL -->
+                <div class="admin-panel hidden" id="panel-orders">
+                    <h2 class="panel-title mb-20">Manage Orders</h2>
+                    
+                    <div class="admin-card">
+                        <div class="table-filters flex-row mb-15">
+                            <select class="admin-input filter-select" id="orderStatusFilter">
+                                <option value="all">All Orders</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Processing">Processing</option>
+                                <option value="Shipped">Shipped</option>
+                                <option value="Delivered">Delivered</option>
+                            </select>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="admin-table full-width">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Date</th>
+                                        <th>Customer Info</th>
+                                        <th>Amount</th>
+                                        <th>UTR (UPI Ref)</th>
+                                        <th>Status</th>
+                                        <th>Update Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminOrdersTableBody">
+                                    <!-- Populated by admin.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. ALL PRODUCTS PANEL -->
+                <div class="admin-panel hidden" id="panel-products">
+                    <div class="flex-between mb-20">
+                        <h2 class="panel-title">Products Catalog</h2>
+                        <button class="btn-admin-primary" onclick="document.querySelector('[data-target=\'panel-add-product\']').click()">
+                            <i class="fas fa-plus"></i> Add New
+                        </button>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="table-responsive">
+                            <table class="admin-table full-width">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Product Name</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Trending</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminProductsTableBody">
+                                    <!-- Populated by admin.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. ADD NEW PRODUCT PANEL -->
+                <div class="admin-panel hidden" id="panel-add-product">
+                    <h2 class="panel-title mb-20">Add New Product</h2>
+                    
+                    <div class="admin-card max-w-800 mx-auto">
+                        <form id="addProductForm">
+                            
+                            <div class="form-group mb-20">
+                                <label class="form-label">Product Title <span class="required">*</span></label>
+                                <input type="text" id="prodTitle" class="admin-input full-width" placeholder="e.g. Premium Leather Wallet" required>
+                            </div>
+                            
+                            <div class="form-row flex-row gap-15 mb-20">
+                                <div class="form-group flex-grow">
+                                    <label class="form-label">Selling Price (₹) <span class="required">*</span></label>
+                                    <input type="number" id="prodPrice" class="admin-input full-width" placeholder="e.g. 1299" required>
+                                </div>
+                                <div class="form-group flex-grow">
+                                    <label class="form-label">MRP (₹) <span class="text-small text-muted">(Optional cut price)</span></label>
+                                    <input type="number" id="prodMRP" class="admin-input full-width" placeholder="e.g. 2499">
+                                </div>
+                            </div>
+
+                            <div class="form-row flex-row gap-15 mb-20">
+                                <div class="form-group flex-grow">
+                                    <label class="form-label">Category <span class="required">*</span></label>
+                                    <select id="prodCategory" class="admin-input full-width" required>
+                                        <option value="" disabled selected>Select Category</option>
+                                        <option value="apparel">Apparel</option>
+                                        <option value="gadgets">Gadgets</option>
+                                        <option value="accessories">Accessories</option>
+                                        <option value="gifts">Gifts</option>
+                                    </select>
+                                </div>
+                                <div class="form-group flex-grow">
+                                    <label class="form-label">Initial Stock Quantity <span class="required">*</span></label>
+                                    <input type="number" id="prodStock" class="admin-input full-width" value="10" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group mb-20">
+                                <label class="form-label">Product Description</label>
+                                <textarea id="prodDesc" class="admin-input full-width" rows="4" placeholder="Detail the features of the product..."></textarea>
+                            </div>
+
+                            <div class="form-group mb-20">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="prodTrending">
+                                    <span class="checkmark"></span>
+                                    Mark as Trending Product (Shows on Home/Trending Page)
+                                </label>
+                            </div>
+
+                            <hr class="admin-divider mb-20">
+
+                            <!-- Image Upload (Cloudinary) Section -->
+                            <div class="form-group mb-20">
+                                <label class="form-label">Product Image <span class="required">*</span></label>
+                                <div class="upload-zone text-center p-30 border-dashed" id="imageUploadZone">
+                                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                    <p class="mt-10 mb-10">Click or drag image here to upload</p>
+                                    <input type="file" id="prodImageFile" accept="image/*" class="hidden-file-input" required>
+                                    <button type="button" class="btn-admin-secondary btn-small" onclick="document.getElementById('prodImageFile').click()">Browse Files</button>
+                                </div>
+                                <!-- Image Preview Box -->
+                                <div id="imagePreviewContainer" class="hidden mt-15 text-center">
+                                    <img src="" id="imagePreview" alt="Preview" style="max-height: 150px; border-radius: 8px;">
+                                    <button type="button" class="btn-text text-danger mt-10" id="removeImageBtn"><i class="fas fa-times"></i> Remove Image</button>
+                                </div>
+                                <p class="text-small text-muted mt-5"><i class="fas fa-info-circle"></i> Image will be safely uploaded to Cloudinary.</p>
+                            </div>
+
+                            <div class="form-actions text-right border-top pt-20 mt-20">
+                                <button type="reset" class="btn-admin-outline mr-10">Clear Form</button>
+                                <button type="submit" class="btn-admin-primary btn-large" id="uploadProductBtn">
+                                    <i class="fas fa-upload"></i> Publish Product
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- 5. CUSTOMERS PANEL (Dummy for now) -->
+                <div class="admin-panel hidden" id="panel-customers">
+                    <h2 class="panel-title mb-20">Registered Customers</h2>
+                    <div class="admin-card text-center p-40">
+                        <i class="fas fa-users text-muted mb-15" style="font-size: 3rem;"></i>
+                        <h3>Customer Management</h3>
+                        <p class="text-muted mt-10">This module will list all authenticated customers and their order history.</p>
+                    </div>
+                </div>
+
+            </div> <!-- End Content Panels -->
+        </div> <!-- End Main Content Area -->
+    </div> <!-- End Admin Layout -->
+
+    <!-- JAVASCRIPT -->
+    <script src="admin.js"></script>
+</body>
+</html>
