@@ -16,17 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
     initProductUpload();
 });
 
-// --- ADMIN AUTHENTICATION ---
+// --- 3. ADMIN AUTHENTICATION (NO REFRESH LOGIN) ---
 function initAdminAuth() {
     const loginForm = document.getElementById('adminLoginForm');
     const loginOverlay = document.getElementById('adminLoginOverlay');
     const dashboardLayout = document.getElementById('adminDashboardLayout');
     const logoutBtn = document.getElementById('adminLogoutBtn');
 
-    // Check saved session on load
+    // Check saved session on page load
     if (localStorage.getItem('mkPrimeAdminAuth') === 'true') {
         if (loginOverlay) {
-            loginOverlay.classList.add('hidden');
             loginOverlay.style.display = 'none';
         }
         if (dashboardLayout) {
@@ -38,7 +37,8 @@ function initAdminAuth() {
 
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+            e.preventDefault(); // Page refresh hone se rokne ke liye
+            
             const emailInput = document.getElementById('adminEmail');
             const passwordInput = document.getElementById('adminPassword');
             const btn = document.getElementById('adminLoginBtn');
@@ -57,8 +57,8 @@ function initAdminAuth() {
             if (email === 'admin@mkprime.com' && password === 'admin123') {
                 localStorage.setItem('mkPrimeAdminAuth', 'true');
                 
+                // Bina refresh kiye login overlay chupao aur dashboard dikhao
                 if (loginOverlay) {
-                    loginOverlay.classList.add('hidden');
                     loginOverlay.style.display = 'none';
                 }
                 if (dashboardLayout) {
@@ -84,7 +84,7 @@ function initAdminAuth() {
     }
 }
 
-// --- TABS & SIDEBAR LOGIC ---
+// --- 4. TABS & SIDEBAR LOGIC ---
 function initAdminTabs() {
     const navItems = document.querySelectorAll('.admin-nav-item');
     const panels = document.querySelectorAll('.admin-panel');
@@ -115,7 +115,7 @@ function initAdminTabs() {
     });
 }
 
-// --- PRODUCT UPLOAD SYSTEM ---
+// --- 5. PRODUCT UPLOAD SYSTEM ---
 function initProductUpload() {
     const addProductForm = document.getElementById('addProductForm');
     const imageInput = document.getElementById('prodImageFile');
@@ -175,7 +175,7 @@ function initProductUpload() {
     }
 }
 
-// --- DATA FETCHING ---
+// --- 6. DATA FETCHING ---
 async function fetchDashboardData() {
     setTimeout(() => {
         const rev = document.getElementById('kpiRevenue');
