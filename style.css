@@ -207,10 +207,19 @@ ul { list-style: none; }
 .btn-icon-square { width: 40px; height: 40px; border-radius: var(--border-radius-sm); background: #f0f0f0; display: flex; justify-content: center; align-items: center; cursor: pointer; transition: 0.3s; }
 .btn-icon-square:hover { background: var(--accent-color); color: #fff; }
 
-/* --- 8. HERO SECTION --- */
+/* --- 8. HERO SECTION (Fixed for Mobile & Overflow) --- */
 .hero-section {
-    position: relative; width: 90%; max-width: 1200px; margin: 20px auto; height: 450px;
-    border-radius: var(--border-radius-lg); overflow: hidden; display: flex; align-items: center; padding: 0 5%;
+    position: relative; 
+    width: 90%; 
+    max-width: 1200px; 
+    margin: 20px auto; 
+    min-height: 420px;
+    height: auto;
+    border-radius: var(--border-radius-lg); 
+    overflow: visible; 
+    display: flex; 
+    align-items: center; 
+    padding: 40px 5%;
 }
 .hero-bg-overlay {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
@@ -221,7 +230,7 @@ ul { list-style: none; }
 .hero-tagline { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent-color); font-weight: 700; margin-bottom: 10px; display: block; }
 .hero-title { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 20px; color: var(--primary-dark); }
 .hero-description { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 30px; }
-.hero-btn-group { display: flex; gap: 15px; }
+.hero-btn-group { display: flex; gap: 15px; flex-wrap: wrap; }
 
 /* --- 9. TRUST FEATURES --- */
 .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 1200px; margin: -30px auto 30px; position: relative; z-index: 10; padding: 0 5%; }
@@ -419,7 +428,7 @@ ul { list-style: none; }
     .footer-grid { grid-template-columns: 1fr; gap: 30px; }
     
     /* Component Adjustments */
-    .hero-section { height: 350px; border-radius: var(--border-radius-md); }
+    .hero-section { min-height: 320px; height: auto; padding: 30px 5%; overflow: visible; border-radius: var(--border-radius-md); }
     .hero-title { font-size: 2.2rem; }
     .hero-btn-group { flex-direction: column; }
     .product-img-box { height: 180px; }
