@@ -23,43 +23,48 @@ function initScrollEffects() {
     
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
-            header.classList.add('scrolled'); // Adds deeper blur and shadow in CSS
+            if(header) header.classList.add('scrolled');
         } else {
-            header.classList.remove('scrolled');
+            if(header) header.classList.remove('scrolled');
         }
     });
 
-    // Back to top or bobbing elements observer
     const bobbingElements = document.querySelectorAll('.bobbing-anim');
     bobbingElements.forEach(el => {
         el.style.animationPlayState = 'running';
     });
 }
 
-// --- 4. AUTHENTICATION MODAL LOGIC ---
+// --- 4. AUTHENTICATION MODAL LOGIC (Fixed & Bulletproof) ---
 function initAuthModal() {
     const authModal = document.getElementById('authModal');
     const closeBtn = document.getElementById('closeAuthBtn');
     const authTriggers = document.querySelectorAll('.auth-trigger');
 
-    if (!authModal) return; // Exit if modal doesn't exist on page
+    if (!authModal) return;
 
-    // Open Modal
+    // Open Modal on click
     authTriggers.forEach(trigger => {
         trigger.addEventListener('click', (e) => {
             e.preventDefault();
+            e.stopPropagation();
             authModal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            document.body.style.overflow = 'hidden';
         });
     });
 
     // Close Modal
     const closeModal = () => {
         authModal.classList.remove('active');
-        document.body.style.overflow = 'auto'; // Restore scrolling
+        document.body.style.overflow = 'auto';
     };
 
-    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            closeModal();
+        });
+    }
 
     window.addEventListener('click', (e) => {
         if (e.target === authModal) {
@@ -86,23 +91,19 @@ function initAuthModal() {
 
 // --- 5. CART & BADGE LOGIC ---
 function initCartLogic() {
-    // For now, using LocalStorage to keep cart count persistent across pages
     let cartCount = localStorage.getItem('mkPrimeCartCount') || 0;
     updateCartBadges(cartCount);
 
-    // Attach event to all Add to Cart buttons
     const addCartBtns = document.querySelectorAll('.add-cart-btn, .add-to-cart-btn');
     addCartBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
             
-            // Increment logic
             cartCount++;
             localStorage.setItem('mkPrimeCartCount', cartCount);
             updateCartBadges(cartCount);
             
-            // Visual feedback (Button transforms briefly)
             const originalText = btn.innerHTML;
             btn.innerHTML = '<i class="fas fa-check"></i> Added';
             btn.classList.add('bg-success');
@@ -130,39 +131,35 @@ function updateCartBadges(count) {
 
 function animatePulse(element) {
     element.classList.remove('pulse-anim');
-    void element.offsetWidth; // Trigger reflow
+    void element.offsetWidth;
     element.classList.add('pulse-anim');
 }
 
-// --- 6. TABS & ACCORDIONS (For Dashboard, Details, Contact) ---
+// --- 6. TABS & ACCORDIONS ---
 function initTabsAndAccordions() {
-    // Tabs Logic (Dashboard & Trending Pills)
     const tabLinks = document.querySelectorAll('.dash-nav-item, .pill-btn, .switch-tab-btn');
     
     tabLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            // Check if it's a dashboard tab
             if(this.hasAttribute('data-tab') || this.hasAttribute('data-target')) {
                 e.preventDefault();
                 const targetId = this.getAttribute('data-tab') || this.getAttribute('data-target');
                 
-                // Remove active from all tabs & links
-                document.querySelectorAll('.dash-tab-content').forEach(tc => tc.classList.add('hidden'));
-                document.querySelectorAll('.dash-tab-content').forEach(tc => tc.classList.remove('active'));
+                document.querySelectorAll('.dash-tab-content').forEach(tc => {
+                    tc.classList.add('hidden');
+                    tc.classList.remove('active');
+                });
                 document.querySelectorAll('.dash-nav-item').forEach(nl => nl.classList.remove('active'));
                 
-                // Add active to clicked link and target tab
                 const targetTab = document.getElementById(`tab-${targetId}`);
                 if(targetTab) {
                     targetTab.classList.remove('hidden');
                     targetTab.classList.add('active');
                 }
                 
-                // If clicked from sidebar, make sidebar link active
                 if(this.classList.contains('dash-nav-item')) {
                     this.classList.add('active');
                 } else {
-                    // If clicked from 'View All' in overview, find the corresponding sidebar link
                     const matchingNav = document.querySelector(`.dash-nav-item[data-tab="${targetId}"]`);
                     if(matchingNav) matchingNav.classList.add('active');
                 }
@@ -170,20 +167,15 @@ function initTabsAndAccordions() {
         });
     });
 
-    // Accordions (Contact FAQ, Product Details)
     const accHeaders = document.querySelectorAll('.accordion-header');
     accHeaders.forEach(header => {
         header.addEventListener('click', function() {
             const item = this.parentElement;
-            
-            // Toggle current
             if (item.classList.contains('active')) {
                 item.classList.remove('active');
             } else {
-                // Close others (Optional: remove this block if multiple can be open)
                 const siblings = item.parentElement.querySelectorAll('.accordion-item');
                 siblings.forEach(sib => sib.classList.remove('active'));
-                
                 item.classList.add('active');
             }
         });
@@ -191,12 +183,10 @@ function initTabsAndAccordions() {
 }
 
 // --- 7. LOADERS & DUMMY DATA INJECTION ---
-// Replaces the Skeleton UI with actual UI cards after a slight delay for premium feel
 function initLoadersAndData() {
     const trendingGrid = document.getElementById('homeTrendingGrid') || document.getElementById('trendingPageGrid');
     const allProductGrid = document.getElementById('allProductGrid');
     
-    // Dummy Premium Data (Will be replaced by Supabase real fetch later)
     const demoProducts = [
         { id: 101, name: 'Premium Leather Wallet', price: '₹1,299', mrp: '₹2,499', image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?w=500&q=80', cat: 'Accessories', badge: 'Trending' },
         { id: 102, name: 'Noise-Canceling Earbuds', price: '₹2,499', mrp: '₹4,999', image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500&q=80', cat: 'Gadgets', badge: 'Hot' },
@@ -207,13 +197,14 @@ function initLoadersAndData() {
     if (trendingGrid) {
         setTimeout(() => {
             renderProducts(demoProducts.slice(0,4), trendingGrid);
-        }, 1200); // 1.2s loading simulation
+        }, 1200);
     }
 
     if (allProductGrid) {
         setTimeout(() => {
             renderProducts(demoProducts, allProductGrid);
-            document.getElementById('totalProductsCount').innerText = demoProducts.length;
+            const totalCount = document.getElementById('totalProductsCount');
+            if(totalCount) totalCount.innerText = demoProducts.length;
         }, 1500);
     }
 }
@@ -245,26 +236,22 @@ function renderProducts(products, container) {
         `;
     });
     
-    // Fade out skeletons and fade in content
     container.style.opacity = '0';
     setTimeout(() => {
         container.innerHTML = html;
         container.style.transition = 'opacity 0.5s ease';
         container.style.opacity = '1';
-        
-        // Re-attach cart events to new buttons
         initCartLogic();
     }, 300);
 }
 
-// --- 8. MOBILE MENU LOGIC ---
+// --- 8. MOBILE MENU LOGIC (Fixed to open Shop Page) ---
 function initMobileMenu() {
     const menuToggle = document.querySelector('.menu-toggle');
-    // Implement mobile off-canvas menu logic here if expanding top header later
     if(menuToggle) {
-        menuToggle.addEventListener('click', () => {
-            // For now, it opens the bottom nav visually or scrolls down
-            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        menuToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            window.location.href = 'shop.html'; // Top 3 lines ab click karne par Shop page kholengi
         });
     }
 }
