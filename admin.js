@@ -2,30 +2,27 @@
    MK PRIME CONNECT - ADMIN BACKEND ENGINE (admin.js)
    ================================================================ */
 
-// --- 1. SUPABASE & CLOUDINARY CONFIG ---
 const supabaseUrl = 'https://lqwgtqtulhifavzidykh.supabase.co';
 const supabaseKey = 'sb_publishable_chUtpCFjxVDIvbTXNnteyA_Vo0K5USw';
 const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
 
-// Cloudinary Details
 const CLOUDINARY_URL = 'https://api.cloudinary.com/v1_1/f7ym0acs/image/upload';
 const CLOUDINARY_UPLOAD_PRESET = 'mkprime_preset';
 
-// --- 2. GLOBAL EVENT LISTENER ---
 document.addEventListener('DOMContentLoaded', () => {
     initAdminAuth();
     initAdminTabs();
     initProductUpload();
 });
 
-// --- 3. ADMIN AUTHENTICATION (Login / Logout) ---
+// --- ADMIN AUTHENTICATION ---
 function initAdminAuth() {
     const loginForm = document.getElementById('adminLoginForm');
     const loginOverlay = document.getElementById('adminLoginOverlay');
     const dashboardLayout = document.getElementById('adminDashboardLayout');
     const logoutBtn = document.getElementById('adminLogoutBtn');
 
-    // Check if already logged in
+    // Check saved session
     if (localStorage.getItem('mkPrimeAdminAuth') === 'true') {
         if (loginOverlay) loginOverlay.classList.add('hidden');
         if (dashboardLayout) dashboardLayout.classList.remove('hidden');
@@ -33,24 +30,33 @@ function initAdminAuth() {
     }
 
     if (loginForm) {
-        loginForm.addEventListener('submit', async (e) => {
+        loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            const email = document.getElementById('adminEmail').value;
-            const password = document.getElementById('adminPassword').value;
+            const emailInput = document.getElementById('adminEmail');
+            const passwordInput = document.getElementById('adminPassword');
             const btn = document.getElementById('adminLoginBtn');
+
+            if (!emailInput || !passwordInput) {
+                alert('Form inputs not found!');
+                return;
+            }
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
 
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Authenticating...';
 
+            // Admin Credentials Check
             if (email === 'admin@mkprime.com' && password === 'admin123') {
-                setTimeout(() => {
-                    localStorage.setItem('mkPrimeAdminAuth', 'true');
-                    if (loginOverlay) loginOverlay.classList.add('hidden');
-                    if (dashboardLayout) dashboardLayout.classList.remove('hidden');
-                    fetchDashboardData();
-                    btn.innerHTML = 'Login to Dashboard <i class="fas fa-lock"></i>';
-                }, 800);
+                localStorage.setItem('mkPrimeAdminAuth', 'true');
+                
+                if (loginOverlay) loginOverlay.classList.add('hidden');
+                if (dashboardLayout) dashboardLayout.classList.remove('hidden');
+                
+                fetchDashboardData();
+                alert('Login Successful! Welcome to Admin Panel.');
             } else {
-                alert('Invalid Admin Credentials! (Hint: admin@mkprime.com / admin123)');
+                alert('Invalid Admin Credentials! Use: admin@mkprime.com / admin123');
                 btn.innerHTML = 'Login to Dashboard <i class="fas fa-lock"></i>';
             }
         });
@@ -65,7 +71,7 @@ function initAdminAuth() {
     }
 }
 
-// --- 4. ADMIN TABS & SIDEBAR LOGIC ---
+// --- TABS & SIDEBAR LOGIC ---
 function initAdminTabs() {
     const navItems = document.querySelectorAll('.admin-nav-item');
     const panels = document.querySelectorAll('.admin-panel');
@@ -96,7 +102,7 @@ function initAdminTabs() {
     });
 }
 
-// --- 5. PRODUCT UPLOAD SYSTEM (Supabase + Cloudinary) ---
+// --- PRODUCT UPLOAD SYSTEM ---
 function initProductUpload() {
     const addProductForm = document.getElementById('addProductForm');
     const imageInput = document.getElementById('prodImageFile');
@@ -116,7 +122,6 @@ function initProductUpload() {
             btn.disabled = true;
 
             try {
-                // STEP 1: Upload to Cloudinary
                 const formData = new FormData();
                 formData.append('file', file);
                 formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
@@ -128,35 +133,27 @@ function initProductUpload() {
                 const cloudData = await cloudRes.json();
                 
                 if (!cloudData.secure_url) throw new Error('Image upload failed');
-                const imageUrl = cloudData.secure_url;
-
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving to Database...';
-
-                // STEP 2: Save Details to Supabase
+                
                 const productData = {
                     title: document.getElementById('prodTitle').value,
                     price: parseFloat(document.getElementById('prodPrice').value),
                     stock: parseInt(document.getElementById('prodStock').value),
                     category: document.getElementById('prodCategory').value,
-                    image_url: imageUrl
+                    image_url: cloudData.secure_url
                 };
 
-                const { error } = await supabase
-                    .from('products')
-                    .insert([productData]);
-
+                const { error } = await supabase.from('products').insert([productData]);
                 if (error) throw error;
 
                 alert('Product successfully published! 🎉');
                 addProductForm.reset();
                 
-                // Switch back to Products list
                 const productsNav = document.querySelector('[data-target="panel-products"]');
                 if (productsNav) productsNav.click();
 
             } catch (error) {
                 console.error('Upload Error:', error);
-                alert('Error uploading product: ' + error.message);
+                alert('Error: ' + error.message);
             } finally {
                 btn.innerHTML = 'Publish Product';
                 btn.disabled = false;
@@ -165,7 +162,7 @@ function initProductUpload() {
     }
 }
 
-// --- 6. DATA FETCHING ---
+// --- DATA FETCHING ---
 async function fetchDashboardData() {
     setTimeout(() => {
         const rev = document.getElementById('kpiRevenue');
@@ -190,25 +187,21 @@ async function fetchDashboardData() {
                 </tr>
             `;
         }
-    }, 800);
+    }, 500);
 }
 
 async function fetchAllProducts() {
     const tbody = document.getElementById('adminProductsTableBody');
     if (!tbody) return;
     
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading Products...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="6" class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>';
 
     try {
-        const { data, error } = await supabase
-            .from('products')
-            .select('*')
-            .order('created_at', { ascending: false });
-
+        const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
         if (error) throw error;
 
         if (!data || data.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No products found. Add your first product!</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No products found.</td></tr>';
             return;
         }
 
@@ -216,39 +209,31 @@ async function fetchAllProducts() {
         data.forEach(p => {
             html += `
                 <tr>
-                    <td><img src="${p.image_url}" class="admin-table-img" alt="Img" style="width:40px; height:40px; object-fit:cover; border-radius:6px;"></td>
+                    <td><img src="${p.image_url}" style="width:40px; height:40px; object-fit:cover; border-radius:6px;"></td>
                     <td class="font-bold">${p.title}</td>
                     <td class="uppercase-text text-small">${p.category}</td>
                     <td class="font-bold text-accent">₹${p.price}</td>
                     <td>${p.stock}</td>
-                    <td>
-                        <button class="btn-icon-square hover-lift" title="Edit"><i class="fas fa-edit"></i></button>
-                    </td>
+                    <td><button class="btn-icon-square hover-lift"><i class="fas fa-edit"></i></button></td>
                 </tr>
             `;
         });
         tbody.innerHTML = html;
     } catch (error) {
-        console.error('Error fetching products:', error);
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading products from database.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-danger">Error loading products.</td></tr>';
     }
 }
 
 async function fetchAllOrders() {
     const tbody = document.getElementById('adminOrdersTableBody');
     if (!tbody) return;
-    
-    tbody.innerHTML = '<tr><td colspan="5" class="text-center"><i class="fas fa-spinner fa-spin"></i> Fetching Orders...</td></tr>';
-    
-    setTimeout(() => {
-        tbody.innerHTML = `
-            <tr>
-                <td class="font-bold">#MK-8923</td>
-                <td class="text-small">14 Oct, 2026</td>
-                <td>Rahul Sharma<br><span class="text-small text-muted">+91 9876543210</span></td>
-                <td class="font-bold">₹2,499</td>
-                <td><span class="status-badge status-processing">Processing</span></td>
-            </tr>
-        `;
-    }, 600);
+    tbody.innerHTML = `
+        <tr>
+            <td class="font-bold">#MK-8923</td>
+            <td class="text-small">14 Oct, 2026</td>
+            <td>Rahul Sharma<br><span class="text-small text-muted">+91 9876543210</span></td>
+            <td class="font-bold">₹2,499</td>
+            <td><span class="status-badge status-processing">Processing</span></td>
+        </tr>
+    `;
 }
