@@ -15,7 +15,7 @@
     <!-- FontAwesome 6 for High-Quality Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- MASTER CSS (Linked here, but we will create this in File 12) -->
+    <!-- MASTER CSS -->
     <link rel="stylesheet" href="style.css">
 
     <!-- Supabase JS Library for Backend Integration -->
@@ -29,7 +29,7 @@
     <div class="announcement-bar">
         <div class="marquee-container">
             <p class="marquee-text">
-                <i class="fas fa-bolt"></i> FLASHSALE LIVE! 
+                <i class="fas fa-bolt"></i> FLASH SALE LIVE! 
                 <span class="divider">|</span> Free Shipping on Orders above ₹999 
                 <span class="divider">|</span> Zero Convenience Fee on UPI Payments (9112923138@ybl) 
                 <span class="divider">|</span> Elevate your lifestyle with MK Prime Connect!
@@ -50,11 +50,11 @@
                 </button>
             </div>
 
-            <!-- Brand Logo / Name -->
+            <!-- Brand Logo / Name (Optimized for full name) -->
             <div class="header-center brand-container">
                 <a href="index.html" class="brand-link">
                     <span class="brand-highlight">MK</span>
-                    <span class="brand-text">PRIME</span>
+                    <span class="brand-text" style="font-size: 1.1rem; letter-spacing: -0.5px;">PRIME CONNECT</span>
                 </a>
             </div>
 
@@ -75,7 +75,6 @@
                 <!-- Cart Trigger with Pulsing Badge -->
                 <button class="icon-btn cart-trigger tooltip-wrapper" onclick="window.location.href='cart.html'" aria-label="Shopping Cart">
                     <i class="fas fa-shopping-bag"></i>
-                    <!-- Pulsing animation class will be handled in CSS -->
                     <span class="cart-badge pulse-anim" id="headerCartCount">0</span>
                     <span class="tooltip-text">Cart</span>
                 </button>
@@ -88,7 +87,7 @@
          ========================================== -->
     <main class="main-wrapper">
         
-        <!-- 1. HERO SECTION (Digital Business Card / Landing) -->
+        <!-- 1. HERO SECTION -->
         <section class="hero-section glass-container">
             <div class="hero-bg-overlay"></div>
             <div class="hero-content-wrapper">
@@ -135,41 +134,32 @@
             </div>
         </section>
 
-        <!-- 3. TOP CATEGORIES (Horizontal Scroll - Mobile Optimized) -->
+        <!-- 3. TOP CATEGORIES -->
         <section class="categories-section section-padding">
             <div class="section-header flex-between">
                 <div>
                     <h2 class="section-title">Shop by Category</h2>
                     <p class="section-subtitle">Find exactly what you're looking for</p>
                 </div>
-                <div class="scroll-indicators desktop-only">
-                    <button class="scroll-btn left"><i class="fas fa-chevron-left"></i></button>
-                    <button class="scroll-btn right"><i class="fas fa-chevron-right"></i></button>
-                </div>
             </div>
             
             <div class="category-carousel no-scrollbar">
-                <!-- Category 1 -->
                 <a href="shop.html?category=apparel" class="category-item glass-card hover-lift">
                     <div class="cat-icon-wrapper"><i class="fas fa-tshirt"></i></div>
                     <span class="cat-name">Apparel</span>
                 </a>
-                <!-- Category 2 -->
                 <a href="shop.html?category=gadgets" class="category-item glass-card hover-lift">
                     <div class="cat-icon-wrapper"><i class="fas fa-mobile-alt"></i></div>
                     <span class="cat-name">Gadgets</span>
                 </a>
-                <!-- Category 3 -->
                 <a href="shop.html?category=accessories" class="category-item glass-card hover-lift">
                     <div class="cat-icon-wrapper"><i class="fas fa-glasses"></i></div>
                     <span class="cat-name">Accessories</span>
                 </a>
-                <!-- Category 4 -->
                 <a href="shop.html?category=gifts" class="category-item glass-card hover-lift">
                     <div class="cat-icon-wrapper"><i class="fas fa-gift"></i></div>
                     <span class="cat-name">Gifts</span>
                 </a>
-                <!-- Category 5 -->
                 <a href="shop.html" class="category-item glass-card hover-lift">
                     <div class="cat-icon-wrapper"><i class="fas fa-ellipsis-h"></i></div>
                     <span class="cat-name">View All</span>
@@ -187,10 +177,7 @@
                 <a href="trending.html" class="link-view-all hover-slide">View All <i class="fas fa-arrow-right"></i></a>
             </div>
 
-            <!-- Product Grid (Will be populated by app.js) -->
             <div class="premium-product-grid" id="homeTrendingGrid">
-                
-                <!-- Skeleton Loader 1 (Shows before data loads for premium feel) -->
                 <div class="product-card skeleton-card">
                     <div class="skeleton-img pulse-bg"></div>
                     <div class="skeleton-content">
@@ -202,8 +189,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Skeleton Loader 2 -->
                 <div class="product-card skeleton-card">
                     <div class="skeleton-img pulse-bg"></div>
                     <div class="skeleton-content">
@@ -215,37 +200,10 @@
                         </div>
                     </div>
                 </div>
-                
-                <!-- Skeleton Loader 3 (Hidden on mobile via CSS) -->
-                <div class="product-card skeleton-card desktop-only-grid">
-                    <div class="skeleton-img pulse-bg"></div>
-                    <div class="skeleton-content">
-                        <div class="skeleton-line short pulse-bg"></div>
-                        <div class="skeleton-line long pulse-bg"></div>
-                        <div class="skeleton-price-row flex-between">
-                            <div class="skeleton-line price pulse-bg"></div>
-                            <div class="skeleton-circle pulse-bg"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Skeleton Loader 4 (Hidden on mobile via CSS) -->
-                <div class="product-card skeleton-card desktop-only-grid">
-                    <div class="skeleton-img pulse-bg"></div>
-                    <div class="skeleton-content">
-                        <div class="skeleton-line short pulse-bg"></div>
-                        <div class="skeleton-line long pulse-bg"></div>
-                        <div class="skeleton-price-row flex-between">
-                            <div class="skeleton-line price pulse-bg"></div>
-                            <div class="skeleton-circle pulse-bg"></div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
 
-        <!-- 5. NEWSLETTER / OFFERS SUBSCRIPTION -->
+        <!-- 5. NEWSLETTER -->
         <section class="newsletter-section glass-container section-padding">
             <div class="newsletter-content text-center">
                 <h2>Join the Prime Club</h2>
@@ -267,9 +225,8 @@
          ========================================== -->
     <footer class="main-footer">
         <div class="footer-grid">
-            <!-- Brand Info -->
             <div class="footer-col brand-col">
-                <a href="index.html" class="footer-logo">MK <span class="highlight">PRIME</span></a>
+                <a href="index.html" class="footer-logo">MK <span class="highlight">PRIME CONNECT</span></a>
                 <p class="footer-desc">Redefining online shopping with premium quality, seamless UI, and secure UPI transactions. Your trust is our priority.</p>
                 <div class="social-icons">
                     <a href="#" class="social-btn hover-lift"><i class="fab fa-instagram"></i></a>
@@ -278,7 +235,6 @@
                 </div>
             </div>
             
-            <!-- Quick Links -->
             <div class="footer-col links-col">
                 <h4>Explore</h4>
                 <ul>
@@ -289,7 +245,6 @@
                 </ul>
             </div>
             
-            <!-- Support & Policies -->
             <div class="footer-col links-col">
                 <h4>Customer Care</h4>
                 <ul>
@@ -300,7 +255,6 @@
                 </ul>
             </div>
 
-            <!-- Contact Info -->
             <div class="footer-col contact-col">
                 <h4>Get in Touch</h4>
                 <ul class="contact-list">
@@ -314,7 +268,6 @@
         <div class="footer-bottom flex-between">
             <p class="copyright">&copy; 2026 MK Prime Connect. All Rights Reserved.</p>
             <div class="payment-methods">
-                <!-- Payment Icons -->
                 <i class="fab fa-google-pay"></i>
                 <i class="fas fa-rupee-sign"></i>
                 <span class="upi-text font-bold">UPI Accepted</span>
@@ -323,7 +276,7 @@
     </footer>
 
     <!-- ==========================================
-         FLOATING ACTION BUTTONS (With Bobbing Anim)
+         FLOATING ACTION BUTTONS
          ========================================== -->
     <div class="floating-actions-wrapper">
         <a href="mailto:mkprimeconnect@gmail.com" class="float-btn email-float bobbing-anim delay-1" aria-label="Email Support">
@@ -359,7 +312,6 @@
             </div>
             <span>Cart</span>
         </a>
-        <!-- This triggers Dashboard if logged in, else triggers Auth Modal -->
         <a href="#" class="b-nav-item auth-trigger" id="bottomAccountBtn">
             <i class="far fa-user"></i>
             <span>Profile</span>
@@ -367,11 +319,10 @@
     </nav>
 
     <!-- ==========================================
-         AUTHENTICATION MODAL (Glassmorphism Popup)
+         AUTHENTICATION MODAL
          ========================================== -->
     <div id="authModal" class="modal-backdrop">
         <div class="modal-card glass-modal">
-            <!-- Close Button -->
             <button class="modal-close-btn" id="closeAuthBtn" aria-label="Close Modal">
                 <i class="fas fa-times"></i>
             </button>
@@ -382,33 +333,26 @@
             </div>
 
             <div class="modal-body">
-                <!-- Google One-Tap Login Button -->
                 <button class="btn-social-auth google-auth hover-lift" id="googleLoginBtn">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google" class="social-icon">
                     <span>Continue with Google</span>
                 </button>
 
-                <!-- Divider -->
                 <div class="auth-divider">
                     <span class="divider-text">OR EMAIL</span>
                 </div>
 
-                <!-- Email/Password Form -->
                 <form id="emailAuthForm" class="auth-form">
                     <div class="form-group">
-                        <label for="userEmail" class="sr-only">Email Address</label>
                         <div class="input-with-icon">
                             <i class="fas fa-envelope icon-left"></i>
                             <input type="email" id="userEmail" class="glass-input" placeholder="Enter your email" required>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="userPassword" class="sr-only">Password</label>
                         <div class="input-with-icon">
                             <i class="fas fa-lock icon-left"></i>
                             <input type="password" id="userPassword" class="glass-input" placeholder="Enter your password" required>
-                            <!-- Password Toggle visibility icon -->
-                            <i class="fas fa-eye icon-right pass-toggle"></i>
                         </div>
                     </div>
                     
@@ -417,17 +361,10 @@
                     </button>
                 </form>
             </div>
-
-            <div class="modal-footer text-center">
-                <p class="terms-text">By continuing, you agree to MK Prime's <br>
-                <a href="#" class="policy-link">Terms of Service</a> & <a href="#" class="policy-link">Privacy Policy</a>.</p>
-            </div>
         </div>
     </div>
 
-    <!-- ==========================================
-         JAVASCRIPT LOGIC (Linked here, File 10)
-         ========================================== -->
+    <!-- JAVASCRIPT -->
     <script src="app.js"></script>
 
 </body>
