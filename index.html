@@ -7,25 +7,41 @@
     <meta name="theme-color" content="#111111">
     <title>MK Prime Connect | Premium E-Commerce</title>
     
-    <!-- Premium Google Fonts: Poppins (Headings) & Inter (Body) -->
+    <!-- Premium Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- FontAwesome 6 for High-Quality Icons -->
+    <!-- FontAwesome 6 Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- MASTER CSS -->
     <link rel="stylesheet" href="style.css">
 
-    <!-- Supabase JS Library for Backend Integration -->
+    <!-- Supabase JS Library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- FOOLPROOF INLINE CLICK HANDLERS -->
+    <script>
+        function openAuthModal() {
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+        function closeAuthModal() {
+            const modal = document.getElementById('authModal');
+            if (modal) {
+                modal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+    </script>
 </head>
 <body class="smooth-scroll-enabled">
 
-    <!-- ==========================================
-         TOP ANNOUNCEMENT BAR (Running Marquee)
-         ========================================== -->
+    <!-- TOP ANNOUNCEMENT BAR -->
     <div class="announcement-bar">
         <div class="marquee-container">
             <p class="marquee-text">
@@ -37,20 +53,18 @@
         </div>
     </div>
 
-    <!-- ==========================================
-         MAIN HEADER (Glassmorphism Ready)
-         ========================================== -->
+    <!-- MAIN HEADER -->
     <header class="glass-header" id="mainHeader">
         <div class="header-container">
             
-            <!-- Mobile Menu Hamburger -->
+            <!-- Mobile Menu Hamburger (Direct onclick added) -->
             <div class="header-left mobile-only">
-                <button class="icon-btn menu-toggle" aria-label="Open Menu">
+                <button class="icon-btn menu-toggle" aria-label="Open Menu" onclick="window.location.href='shop.html'">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
 
-            <!-- Brand Logo / Name (Optimized for full name) -->
+            <!-- Brand Logo / Name -->
             <div class="header-center brand-container">
                 <a href="index.html" class="brand-link">
                     <span class="brand-highlight">MK</span>
@@ -58,21 +72,19 @@
                 </a>
             </div>
 
-            <!-- Header Actions (Search, Auth, Cart) -->
+            <!-- Header Actions -->
             <div class="header-right action-icons">
-                <!-- Search Trigger -->
                 <button class="icon-btn search-trigger tooltip-wrapper" aria-label="Search Products">
                     <i class="fas fa-search"></i>
                     <span class="tooltip-text">Search</span>
                 </button>
                 
-                <!-- Login/Dashboard Trigger (Desktop) -->
-                <button class="icon-btn auth-trigger tooltip-wrapper desktop-only" id="headerAuthBtn" aria-label="My Account">
+                <!-- Desktop Sign In Button (Direct onclick added) -->
+                <button class="icon-btn auth-trigger tooltip-wrapper desktop-only" id="headerAuthBtn" aria-label="My Account" onclick="openAuthModal()">
                     <i class="far fa-user-circle"></i>
                     <span class="btn-label">Sign In</span>
                 </button>
                 
-                <!-- Cart Trigger with Pulsing Badge -->
                 <button class="icon-btn cart-trigger tooltip-wrapper" onclick="window.location.href='cart.html'" aria-label="Shopping Cart">
                     <i class="fas fa-shopping-bag"></i>
                     <span class="cart-badge pulse-anim" id="headerCartCount">0</span>
@@ -82,12 +94,10 @@
         </div>
     </header>
 
-    <!-- ==========================================
-         MAIN PAGE CONTENT
-         ========================================== -->
+    <!-- MAIN PAGE CONTENT -->
     <main class="main-wrapper">
         
-        <!-- 1. HERO SECTION -->
+        <!-- HERO SECTION -->
         <section class="hero-section glass-container">
             <div class="hero-bg-overlay"></div>
             <div class="hero-content-wrapper">
@@ -107,7 +117,7 @@
             </div>
         </section>
 
-        <!-- 2. BRAND TRUST & FEATURES BAR -->
+        <!-- TRUST FEATURES -->
         <section class="trust-features-section">
             <div class="features-grid">
                 <div class="feature-card glass-card hover-lift">
@@ -134,7 +144,7 @@
             </div>
         </section>
 
-        <!-- 3. TOP CATEGORIES -->
+        <!-- CATEGORIES -->
         <section class="categories-section section-padding">
             <div class="section-header flex-between">
                 <div>
@@ -167,7 +177,7 @@
             </div>
         </section>
 
-        <!-- 4. TRENDING PRODUCTS PREVIEW -->
+        <!-- TRENDING PRODUCTS PREVIEW -->
         <section class="trending-section section-padding">
             <div class="section-header flex-between">
                 <div class="title-with-badge">
@@ -203,7 +213,7 @@
             </div>
         </section>
 
-        <!-- 5. NEWSLETTER -->
+        <!-- NEWSLETTER -->
         <section class="newsletter-section glass-container section-padding">
             <div class="newsletter-content text-center">
                 <h2>Join the Prime Club</h2>
@@ -220,9 +230,7 @@
 
     </main>
 
-    <!-- ==========================================
-         DEEP FOOTER SECTION
-         ========================================== -->
+    <!-- FOOTER -->
     <footer class="main-footer">
         <div class="footer-grid">
             <div class="footer-col brand-col">
@@ -249,7 +257,7 @@
                 <h4>Customer Care</h4>
                 <ul>
                     <li><a href="contact.html">Contact Us</a></li>
-                    <li><a href="#" class="auth-trigger">My Account / Login</a></li>
+                    <li><a href="javascript:void(0)" onclick="openAuthModal()">My Account / Login</a></li>
                     <li><a href="#">Shipping Policy</a></li>
                     <li><a href="#">Returns & Refunds</a></li>
                 </ul>
@@ -275,9 +283,7 @@
         </div>
     </footer>
 
-    <!-- ==========================================
-         FLOATING ACTION BUTTONS
-         ========================================== -->
+    <!-- FLOATING ACTIONS -->
     <div class="floating-actions-wrapper">
         <a href="mailto:mkprimeconnect@gmail.com" class="float-btn email-float bobbing-anim delay-1" aria-label="Email Support">
             <i class="fas fa-envelope"></i>
@@ -289,9 +295,7 @@
         </a>
     </div>
 
-    <!-- ==========================================
-         BOTTOM NAVIGATION (Mobile Only - Fixed)
-         ========================================== -->
+    <!-- BOTTOM NAVIGATION (Mobile Only) -->
     <nav class="bottom-nav-bar glass-nav">
         <a href="index.html" class="b-nav-item active">
             <i class="fas fa-home"></i>
@@ -312,18 +316,17 @@
             </div>
             <span>Cart</span>
         </a>
-        <a href="#" class="b-nav-item auth-trigger" id="bottomAccountBtn">
+        <!-- Mobile Profile Button (Direct onclick added) -->
+        <a href="javascript:void(0)" class="b-nav-item auth-trigger" id="bottomAccountBtn" onclick="openAuthModal()">
             <i class="far fa-user"></i>
             <span>Profile</span>
         </a>
     </nav>
 
-    <!-- ==========================================
-         AUTHENTICATION MODAL
-         ========================================== -->
+    <!-- AUTHENTICATION MODAL -->
     <div id="authModal" class="modal-backdrop">
         <div class="modal-card glass-modal">
-            <button class="modal-close-btn" id="closeAuthBtn" aria-label="Close Modal">
+            <button class="modal-close-btn" id="closeAuthBtn" aria-label="Close Modal" onclick="closeAuthModal()">
                 <i class="fas fa-times"></i>
             </button>
             
